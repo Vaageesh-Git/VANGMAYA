@@ -1,0 +1,109 @@
+// app/components/CategoryShowcase/CategoryShowcase.jsx
+import Link from 'next/link';
+import Image from 'next/image';
+
+const categories = [
+  {
+    id: 1,
+    name: 'Electronics',
+    image: '/images/categories/electronics.jpg',
+    href: '/category/electronics',
+    icon: '📱'
+  },
+  {
+    id: 2,
+    name: 'Fashion',
+    image: '/images/categories/fashion.jpg',
+    href: '/category/fashion',
+    icon: '👗'
+  },
+  {
+    id: 3,
+    name: 'Home & Living',
+    image: '/images/categories/home.jpg',
+    href: '/category/home-living',
+    icon: '🏠'
+  },
+  {
+    id: 4,
+    name: 'Beauty',
+    image: '/images/categories/beauty.jpg',
+    href: '/category/beauty',
+    icon: '💄'
+  },
+  {
+    id: 5,
+    name: 'Sports',
+    image: '/images/categories/sports.jpg',
+    href: '/category/sports',
+    icon: '⚽'
+  },
+  {
+    id: 6,
+    name: 'Books',
+    image: '/images/categories/books.jpg',
+    href: '/category/books',
+    icon: '📚'
+  },
+  {
+    id: 7,
+    name: 'Toys & Games',
+    image: '/images/categories/toys.jpg',
+    href: '/category/toys',
+    icon: '🎮'
+  },
+  {
+    id: 8,
+    name: 'Grocery',
+    image: '/images/categories/grocery.jpg',
+    href: '/category/grocery',
+    icon: '🛒'
+  },
+];
+
+export default function CategoryShowcase() {
+  return (
+    <section className="categories section" aria-labelledby="categories-title">
+      <div className="container">
+        <h2 id="categories-title" className="section-title">
+          Shop by Category
+        </h2>
+        <p className="section-subtitle">
+          Browse through our wide range of categories
+        </p>
+
+        <div className="categories__grid">
+          {categories.map((category) => (
+            <Link
+              key={category.id}
+              href={category.href}
+              className="categories__card"
+            >
+              <div className="categories__image-wrapper">
+                <Image
+                  src={category.image}
+                  alt={category.name}
+                  fill
+                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                  className="categories__image"
+                />
+                <div className="categories__overlay" />
+              </div>
+              
+              <div className="categories__content">
+                <span className="categories__icon">{category.icon}</span>
+                <h3 className="categories__name">{category.name}</h3>
+                <span className="categories__explore">
+                  Explore
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                  </svg>
+                </span>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
