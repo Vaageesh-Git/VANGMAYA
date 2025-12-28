@@ -143,6 +143,10 @@ export default function Navbar() {
             <span></span>
           </button>
         </div>
+
+        <div className='navbar-cta'>
+          <button>Signup</button>
+        </div>
       </nav>
 
       {/* Mobile Menu */}

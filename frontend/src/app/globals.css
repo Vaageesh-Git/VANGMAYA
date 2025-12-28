@@ -592,7 +592,20 @@ input, textarea {
   }
 }
 
+.navbar-cta{
+  background-color: #f97109ea;
+  border-radius: 10px;
+  width: 5em;
+  height: 2em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
+.navbar-cta button{
+  color: white;
+  font-weight: bold;
+}
 /* app/components/Hero/Hero.css */
 .hero {
   position: relative;
