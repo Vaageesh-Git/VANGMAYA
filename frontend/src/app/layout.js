@@ -9,7 +9,7 @@ const inter = Inter({
 });
 
 export const metadata = {
-  metadataBase: new URL("https://vangmaya.com"),
+  metadataBase: new URL("https://vangmaya.in"),
   title: {
     default: "VANGMAYA – Shop Online at Best Prices",
     template: "%s | VANGMAYA",
