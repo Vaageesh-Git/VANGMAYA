@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 
 export default function SignupClient() {
@@ -22,7 +23,7 @@ export default function SignupClient() {
         }
 
         try{
-            const response = await axios.post('/api/auth/signup', userData)
+            const response = await axios.post(`${BACKEND_URL}/api/auth/signup`, userData)
             if (response.status === 201){
                 alert("Signup Successfull")
                 router.push('/')

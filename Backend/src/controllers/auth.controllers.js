@@ -33,6 +33,7 @@ const login = async (req,res) => {
         if (err.message === "USER_DOES_NOT_EXIST" || err.message === "PASSWORD_IS_INCORRECT") {
             return res.status(401).json({ message: "Invalid Credentials"});
         }
+        console.log(err.message)
         return res.status(500).json({ message: "Internal Server Error" });
 
     }
