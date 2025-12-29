@@ -3,16 +3,17 @@ import Link from "next/link";
 import axios from "axios";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useAuth } from "../context/AuthContext";
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export default function LoginClient() {
     const router = useRouter();
     const [email,setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const { setIsLoggedIn } = useAuth();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(BACKEND_URL)
         const userData = {
             email,
             password
@@ -20,6 +21,7 @@ export default function LoginClient() {
         try{
             const response = await axios.post(`${BACKEND_URL}/api/auth/login`, userData, {withCredentials : true})
             if (response.status === 200){
+                setIsLoggedIn(true);
                 router.push('/')
             }
         } catch (err){

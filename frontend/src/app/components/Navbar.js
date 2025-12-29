@@ -1,9 +1,9 @@
-// app/components/Navbar/Navbar.jsx
 'use client';
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useAuth } from "../context/AuthContext";
 import axios from 'axios';
 
 const categories = [
@@ -19,7 +19,7 @@ export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
-  const [isLoggedin, setIsLoggedIn] = useState(false);
+  const { isLoggedIn, loading } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -38,19 +38,6 @@ export default function Navbar() {
     }
   }, [isMobileMenuOpen]);
 
-  useEffect(() => {
-    axios.get(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/me`,
-      { withCredentials: true }
-    )
-    .then(() => {
-      setIsLoggedIn(true);
-    })
-    .catch(() => {
-      setIsLoggedIn(false);
-    });
-  }, []);
-  
   return (
     <header className={`navbar ${isScrolled ? 'navbar--scrolled' : ''}`}>
       <nav className="navbar__container container">
@@ -121,7 +108,7 @@ export default function Navbar() {
 
         {/* Action Icons */}
         <div className="navbar__actions">
-          {isLoggedin &&
+          {!loading && isLoggedIn &&
             <Link href="/account" className="navbar__action-btn navbar_account" aria-label="My Account">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
@@ -161,12 +148,11 @@ export default function Navbar() {
           </button>
         </div>
 
-        {!isLoggedin &&
+        {!loading && !isLoggedIn &&
           <div className='navbar-cta'>
             <Link href="/signup" className='signup-button'>Signup</Link>
           </div>
         }
-
       </nav>
 
       {/* Mobile Menu */}
@@ -216,6 +202,10 @@ export default function Navbar() {
           className="navbar__overlay"
           onClick={() => setIsMobileMenuOpen(false)}
         />
+      )}
+
+      {loading && (
+        <div className="navbar-auth-placeholder" />
       )}
     </header>
   );
