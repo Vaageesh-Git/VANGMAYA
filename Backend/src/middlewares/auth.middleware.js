@@ -1,3 +1,5 @@
+const jwt = require('jsonwebtoken');
+
 function validateSignup(req,res,next){
     try{
         const {email,password,name,confirmPassword} = req.body;
@@ -33,6 +35,7 @@ function validateLogin(req,res,next){
 
 function authCheck(req,res,next){
     const token = req.cookies.access_token;
+
     if (!token) {
         return res.status(401).json({ message: "Unauthorized" });
     }
@@ -42,6 +45,7 @@ function authCheck(req,res,next){
         req.user = decoded;
         next();
     } catch (err) {
+        console.error(err.message)
         return res.status(401).json({ message: "Invalid token" });
     }
 }

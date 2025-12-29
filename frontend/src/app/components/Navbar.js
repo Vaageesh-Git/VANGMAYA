@@ -4,6 +4,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import axios from 'axios';
 
 const categories = [
   { name: 'Electronics', href: '/category/electronics' },
@@ -18,6 +19,7 @@ export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
+  const [isLoggedin, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -37,9 +39,18 @@ export default function Navbar() {
   }, [isMobileMenuOpen]);
 
   useEffect(() => {
-
-  }, [])
-
+    axios.get(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/me`,
+      { withCredentials: true }
+    )
+    .then(() => {
+      setIsLoggedIn(true);
+    })
+    .catch(() => {
+      setIsLoggedIn(false);
+    });
+  }, []);
+  
   return (
     <header className={`navbar ${isScrolled ? 'navbar--scrolled' : ''}`}>
       <nav className="navbar__container container">
@@ -150,9 +161,12 @@ export default function Navbar() {
           </button>
         </div>
 
-        <div className='navbar-cta'>
-          <Link href="/signup" className='signup-button'>Signup</Link>
-        </div>
+        {!isLoggedin &&
+          <div className='navbar-cta'>
+            <Link href="/signup" className='signup-button'>Signup</Link>
+          </div>
+        }
+
       </nav>
 
       {/* Mobile Menu */}
