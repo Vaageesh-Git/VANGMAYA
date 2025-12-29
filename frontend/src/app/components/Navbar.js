@@ -145,7 +145,7 @@ export default function Navbar() {
         </div>
 
         <div className='navbar-cta'>
-          <button>Signup</button>
+          <Link href="/signup" className='signup-button'>Signup</Link>
         </div>
       </nav>
 

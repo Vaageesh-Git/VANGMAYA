@@ -6,56 +6,56 @@ const categories = [
   {
     id: 1,
     name: 'Electronics',
-    image: '/images/categories/electronics.jpg',
+    image: '/categories/electronics.png',
     href: '/category/electronics',
     icon: '📱'
   },
   {
     id: 2,
     name: 'Fashion',
-    image: '/images/categories/fashion.jpg',
+    image: '/categories/fashion.png',
     href: '/category/fashion',
     icon: '👗'
   },
   {
     id: 3,
-    name: 'Home & Living',
-    image: '/images/categories/home.jpg',
+    name: 'Home & Kitchen',
+    image: '/categories/home&kitchen.png',
     href: '/category/home-living',
     icon: '🏠'
   },
   {
     id: 4,
     name: 'Beauty',
-    image: '/images/categories/beauty.jpg',
+    image: '/categories/beauty.png',
     href: '/category/beauty',
     icon: '💄'
   },
   {
     id: 5,
     name: 'Sports',
-    image: '/images/categories/sports.jpg',
+    image: '/categories/sports.png',
     href: '/category/sports',
     icon: '⚽'
   },
   {
     id: 6,
     name: 'Books',
-    image: '/images/categories/books.jpg',
+    image: '/categories/books.png',
     href: '/category/books',
     icon: '📚'
   },
   {
     id: 7,
     name: 'Toys & Games',
-    image: '/images/categories/toys.jpg',
+    image: '/categories/toys&games.png',
     href: '/category/toys',
     icon: '🎮'
   },
   {
     id: 8,
     name: 'Grocery',
-    image: '/images/categories/grocery.jpg',
+    image: '/categories/grocery.png',
     href: '/category/grocery',
     icon: '🛒'
   },
