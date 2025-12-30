@@ -30,9 +30,6 @@ const footerLinks = {
       { name: 'Contact Us', href: '/contact' },
       { name: 'FAQs', href: '/faqs' },
       { name: 'Shipping Info', href: '/shipping' },
-      { name: 'Returns & Exchanges', href: '/returns' },
-      { name: 'Track Order', href: '/track-order' },
-      { name: 'Size Guide', href: '/size-guide' },
     ]
   },
   company: {
@@ -40,7 +37,6 @@ const footerLinks = {
     links: [
       { name: 'About Us', href: '/about' },
       { name: 'Careers', href: '/careers' },
-      { name: 'Press & Media', href: '/press' },
       { name: 'Affiliate Program', href: '/affiliates' },
       { name: 'Sell on Vangmaya', href: '/sell' },
     ]
@@ -131,21 +127,21 @@ export default function Footer() {
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
                   </svg>
-                  <span>1800-123-4567 (Toll Free)</span>
+                  <span>+91 8745988778 (Toll Free)</span>
                 </div>
                 <div className="footer__contact-item">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
                     <polyline points="22,6 12,13 2,6"/>
                   </svg>
-                  <span>support@vangmaya.in</span>
+                  <span>vangmaya2025@gmail.com</span>
                 </div>
                 <div className="footer__contact-item">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
                     <circle cx="12" cy="10" r="3"/>
                   </svg>
-                  <span>Mumbai, Maharashtra, India</span>
+                  <span>Delhi, India</span>
                 </div>
               </div>
 
@@ -194,43 +190,6 @@ export default function Footer() {
       <div className="footer__middle">
         <div className="container">
           <div className="footer__middle-content">
-            {/* Download App */}
-            <div className="footer__app">
-              <h4 className="footer__app-title">Download Our App</h4>
-              <p className="footer__app-text">Shop on the go with exclusive app-only deals!</p>
-              <div className="footer__app-buttons">
-                <a 
-                  href="https://play.google.com/store" 
-                  className="footer__app-btn"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Download on Google Play"
-                >
-                  <svg viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M3.609 1.814L13.792 12 3.61 22.186a.996.996 0 0 1-.61-.92V2.734a1 1 0 0 1 .609-.92zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.199-3.198l2.807 1.626a1 1 0 0 1 0 1.73l-2.808 1.626L15.206 12l2.492-2.491zM5.864 2.658L16.8 9.99l-2.302 2.302-8.634-8.634z"/>
-                  </svg>
-                  <div>
-                    <span>GET IT ON</span>
-                    <strong>Google Play</strong>
-                  </div>
-                </a>
-                <a 
-                  href="https://apps.apple.com" 
-                  className="footer__app-btn"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Download on App Store"
-                >
-                  <svg viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
-                  </svg>
-                  <div>
-                    <span>Download on the</span>
-                    <strong>App Store</strong>
-                  </div>
-                </a>
-              </div>
-            </div>
 
             {/* Payment Methods */}
             <div className="footer__payments">
