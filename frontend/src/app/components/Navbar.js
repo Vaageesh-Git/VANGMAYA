@@ -108,7 +108,7 @@ export default function Navbar() {
 
         {/* Action Icons */}
         <div className="navbar__actions">
-          {!loading && isLoggedIn &&
+          { isLoggedIn &&
             <Link href="/account" className="navbar__action-btn navbar_account" aria-label="My Account">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
@@ -131,9 +131,15 @@ export default function Navbar() {
               <circle cx="20" cy="21" r="1" />
               <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
             </svg>
-            <span className="navbar__cart-count">3</span>
+            <span className="navbar__cart-count">0</span>
             <span className="navbar__action-label">Cart</span>
           </Link>
+
+        {!isLoggedIn &&
+          <div className='navbar-cta'>
+            <Link href="/signup" className='signup-button'>Signup</Link>
+          </div>
+        }
 
           {/* Mobile Menu Toggle */}
           <button 
@@ -147,12 +153,6 @@ export default function Navbar() {
             <span></span>
           </button>
         </div>
-
-        {!loading && !isLoggedIn &&
-          <div className='navbar-cta'>
-            <Link href="/signup" className='signup-button'>Signup</Link>
-          </div>
-        }
       </nav>
 
       {/* Mobile Menu */}
@@ -193,6 +193,9 @@ export default function Navbar() {
           <Link href="/wishlist" onClick={() => setIsMobileMenuOpen(false)}>
             Wishlist
           </Link>
+          {!isLoggedIn &&
+            <Link href="/signup" className='signup-button-mobile' onClick={() => setIsMobileMenuOpen(false)}>Signup</Link>
+          }
         </div>
       </div>
 

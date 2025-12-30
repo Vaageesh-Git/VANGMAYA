@@ -226,6 +226,8 @@ input, textarea {
   }
 }
 
+
+
 /* Category Dropdown */
 .navbar__dropdown {
   position: relative;
@@ -602,9 +604,23 @@ input, textarea {
   align-items: center;
 }
 
+@media (max-width: 768px) {
+  .navbar-cta {
+    display: none;
+  }
+}
+
+
 .signup-button {
   color: white;
   font-weight: bold;
+}
+
+.signup-button-mobile{
+  background-color: orange;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 /* app/components/Hero/Hero.css */
 .hero {
@@ -3414,5 +3430,105 @@ input, textarea {
 /* Container */
 .container {
   max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ===========================
+   WHY VANGMAYA (PREMIUM HERO STYLE)
+=========================== */
+
+.why-vangmaya {
+  padding: 5rem 1rem;
+  background: linear-gradient(135deg, #f9fafb, #ffffff);
+}
+
+.why-vangmaya__title {
+  text-align: center;
+  font-size: 2.6rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  margin-bottom: 0.75rem;
+}
+
+.why-vangmaya__subtitle {
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto 4rem;
+  color: #666;
+  font-size: 1.1rem;
+}
+
+/* GRID */
+.why-vangmaya__grid {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+/* CARDS */
+.why-vangmaya__card {
+  position: relative;
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 2.5rem 2rem;
+  text-align: left;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+/* Accent glow */
+.why-vangmaya__card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    120px at top left,
+    rgba(0, 0, 0, 0.06),
+    transparent 60%
+  );
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.why-vangmaya__card:hover::before {
+  opacity: 1;
+}
+
+.why-vangmaya__card:hover {
+  transform: translateY(-10px) scale(1.015);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12);
+}
+
+/* TEXT */
+.why-vangmaya__card h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.why-vangmaya__card p {
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.6;
+}
+
+/* TOP BORDER ACCENT */
+.why-vangmaya__card:nth-child(1) {
+  border-top: 5px solid #000;
+}
+.why-vangmaya__card:nth-child(2) {
+  border-top: 5px solid #1a1a1a;
+}
+.why-vangmaya__card:nth-child(3) {
+  border-top: 5px solid #333;
+}
+.why-vangmaya__card:nth-child(4) {
+  border-top: 5px solid #555;
+}
+
+/* CONTAINER */
+.container {
+  max-width: 1240px;
   margin: 0 auto;
 }

@@ -9,25 +9,56 @@ const slides = [
   {
     id: 1,
     title: 'Everything You Need. Best Prices. One Place.',
-    subtitle: 'Discover thousands of products across electronics, fashion, home & more — all at unbeatable prices with fast delivery.',
+    subtitle:
+      'Discover thousands of products across electronics, fashion, home & more — all at unbeatable prices with fast delivery.',
     image: '/images/hero-1.jpg',
-    cta: { primary: 'Shop Now', secondary: 'Explore Categories' }
+    cta: {
+      primary: {
+        label: 'Shop Now',
+        href: '/products',
+      },
+      secondary: {
+        label: 'Explore Categories',
+        href: '/categories',
+      },
+    },
   },
   {
     id: 2,
     title: 'New Season, New Styles',
-    subtitle: 'Fresh arrivals in fashion & accessories. Upgrade your wardrobe with the latest trends.',
+    subtitle:
+      'Fresh arrivals in fashion & accessories. Upgrade your wardrobe with the latest trends.',
     image: '/images/hero-2.jpg',
-    cta: { primary: 'Shop Fashion', secondary: 'View Collections' }
+    cta: {
+      primary: {
+        label: 'Shop Fashion',
+        href: '/category/fashion',
+      },
+      secondary: {
+        label: 'View Collections',
+        href: '/category/fashion',
+      },
+    },
   },
   {
     id: 3,
     title: 'Tech at Your Fingertips',
-    subtitle: 'From smartphones to smart homes — find the latest gadgets at amazing prices.',
+    subtitle:
+      'From smartphones to smart homes — find the latest gadgets at amazing prices.',
     image: '/images/hero-3.jpg',
-    cta: { primary: 'Shop Electronics', secondary: 'See Deals' }
+    cta: {
+      primary: {
+        label: 'Shop Electronics',
+        href: '/category/electronics',
+      },
+      secondary: {
+        label: 'See Deals',
+        href: '/category/electronics',
+      },
+    },
   },
 ];
+
 
 export default function Hero() {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -69,13 +100,13 @@ export default function Hero() {
             {/* Background Image */}
             <div className="hero__image-wrapper">
                 <Image
-                src={slide.image}
-                alt=""
-                fill
-                priority={index === 0}
-                quality={85}
-                sizes="100vw"
-                className="hero__image"
+                  src={slide.image}
+                  alt=""
+                  fill
+                  priority={index === 0}
+                  quality={85}
+                  sizes="100vw"
+                  className="hero__image"
                 />
               <div className="hero__overlay" />
             </div>
@@ -90,16 +121,24 @@ export default function Hero() {
                 )}
                 <p className="hero__subtitle">{slide.subtitle}</p>
                 <div className="hero__cta">
-                  <Link href="/shop" className="hero__btn hero__btn--primary">
-                    {slide.cta.primary}
+                  <Link
+                    href={slide.cta.primary.href}
+                    className="hero__btn hero__btn--primary"
+                  >
+                    {slide.cta.primary.label}
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                       <path d="M5 12h14M12 5l7 7-7 7" />
                     </svg>
                   </Link>
-                  <Link href="/categories" className="hero__btn hero__btn--secondary">
-                    {slide.cta.secondary}
+
+                  <Link
+                    href={slide.cta.secondary.href}
+                    className="hero__btn hero__btn--secondary"
+                  >
+                    {slide.cta.secondary.label}
                   </Link>
                 </div>
+
               </div>
             </div>
           </div>
