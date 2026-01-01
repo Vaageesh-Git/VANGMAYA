@@ -1,14 +1,22 @@
-// app/product/[slug]/page.js
+import { notFound } from "next/navigation";
 import ProductClient from "./productClient";
 
-export const metadata = {
-  title: "Product Details | VANGMAYA",
-  description: "View product details, price, and buy online on VANGMAYA.",
-};
+async function getProduct(slug) {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/products/${slug}`,
+    { cache: "no-store" }
+  );
 
-export default function ProductPage({ params }) {
-  const { slug } = params;
+  if (!res.ok) return null;
+  return res.json();
+}
 
-  // Later: fetch product by slug here (server-side)
-  return <ProductClient slug={slug} />;
+export default async function ProductPage({ params }) {
+  const product = await getProduct(params.slug);
+
+  if (!product) {
+    notFound();
+  }
+
+  return <ProductClient product={product} />;
 }

@@ -3,37 +3,23 @@
 import Image from "next/image";
 import Link from "next/link";
 
-export default function ProductClient({ slug }) {
-  const product = {
-    name: "iPhone 15 Pro Max",
-    brand: "Apple",
-    price: 156900,
-    originalPrice: 169900,
-    rating: 4.8,
-    reviews: 12547,
-    inStock: true,
-    description:
-      "The iPhone 15 Pro Max features a titanium design, A17 Pro chip, and an advanced camera system.",
-    images: [
-      "/images/products/electronics/iphone-15-pro.jpg",
-      "/images/products/electronics/iphone-15-pro.jpg",
-    ],
-  };
-
+export default function ProductClient({ product }) {
   return (
     <main className="product-page container">
       {/* Breadcrumb */}
       <nav className="breadcrumb">
         <Link href="/">Home</Link> /{" "}
-        <Link href="/category/electronics">Electronics</Link> /{" "}
-        <span>{product.name}</span>
+        <Link href={`/category/${product.category.slug}`}>
+          {product.category.name}
+        </Link>{" "}
+        / <span>{product.name}</span>
       </nav>
 
       <div className="product-layout">
         {/* LEFT: Images */}
         <div className="product-images">
           <Image
-            src={product.images[0]}
+            src={product.thumbnail}
             alt={product.name}
             width={500}
             height={500}
@@ -47,16 +33,17 @@ export default function ProductClient({ slug }) {
           <p className="product-brand">Brand: {product.brand}</p>
 
           <div className="product-rating">
-            ⭐ {product.rating} ({product.reviews} reviews)
+            ⭐ {product.rating} ({product.reviewCount} reviews)
           </div>
 
           <div className="product-price">
             <span className="price">
-              ₹{product.price.toLocaleString()}
+              ₹{(product.price / 100).toLocaleString()}
             </span>
+
             {product.originalPrice && (
               <span className="original-price">
-                ₹{product.originalPrice.toLocaleString()}
+                ₹{(product.originalPrice / 100).toLocaleString()}
               </span>
             )}
           </div>
