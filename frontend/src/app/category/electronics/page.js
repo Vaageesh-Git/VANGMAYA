@@ -1,4 +1,3 @@
-// app/category/electronics/page.jsx
 import CategoryBanner from '@/app/components/CategoryBanner';
 import ProductListing from '@/app/components/ProductListing';
 
@@ -264,6 +263,9 @@ const filterOptions = {
 };
 
 export default function ElectronicsPage() {
+  // useEffect(() => {
+
+  // },[])
   return (
     <>
       <main className="category-page">

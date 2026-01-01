@@ -3,7 +3,7 @@ import ProductClient from "./productClient";
 
 async function getProduct(slug) {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/products/${slug}`,
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/product/${slug}`,
     { cache: "no-store" }
   );
 

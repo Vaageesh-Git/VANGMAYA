@@ -12,6 +12,25 @@ async function getProductBySlug({slug}){
     })
 };
 
+async function getProductsByCategory(categorySlug) {
+  return await prisma.product.findMany({
+    where: {
+      isActive: true,
+      category: {
+        slug: categorySlug
+      }
+    },
+    include: {
+      images: true,
+      category: true
+    },
+    orderBy: {
+      createdAt: 'desc'
+    }
+  });
+};
+
 module.exports = {
-    getProductBySlug
-}
+    getProductBySlug,
+    getProductsByCategory
+};

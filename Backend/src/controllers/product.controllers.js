@@ -16,6 +16,17 @@ const getProductBySlug = async (req,res) => {
     }
 };
 
+const getProductsByCategory = async (req,res) => {
+    try {
+        const { category } = req.query;
+        const products = await productServices.getProductsByCategory(category);
+        return res.status(200).json(products);
+    } catch(err){
+        return res.status(500).json({message : "Internal Server Error"})
+    }
+};
+
 module.exports = {
-    getProductBySlug
+    getProductBySlug,
+    getProductsByCategory
 }

@@ -10,6 +10,21 @@ function validateSlug(req,res,next) {
     }
 };
 
+function validateCategorySlug(req,res,next){
+    try{
+
+        const { category } = req.query;
+        if (!category) {
+            return res.status(400).json({message: "Category query param is required"});
+        }
+
+        next()
+    } catch(err){
+        return res.status(500).json({message : "Internal Server Error"})
+    }
+}
+
 module.exports = {
-    validateSlug
+    validateSlug,
+    validateCategorySlug
 }
