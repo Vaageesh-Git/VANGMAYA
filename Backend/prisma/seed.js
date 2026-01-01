@@ -21,7 +21,7 @@ async function main() {
         image: "/images/banners/fashion-banner.jpg",
       },
       {
-        name: "Home & Living",
+        name: "Home_Living",
         slug: "home-living",
         description: "Furniture, decor and essentials",
         image: "/images/banners/home-living-banner.jpg",
