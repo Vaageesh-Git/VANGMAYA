@@ -24,7 +24,22 @@ function validateCategorySlug(req,res,next){
     }
 }
 
+function validateProductIds(req,res,next){
+    try{
+        const {ids} = req.body;
+
+        if (!ids){
+            return res.status(400).json({message : "Product id's are required"})
+        }
+
+        next()
+    } catch(err){
+        return res.status(500).json({message : "Internal Server Error"})
+    }
+}
+
 module.exports = {
     validateSlug,
-    validateCategorySlug
+    validateCategorySlug,
+    validateProductIds
 }

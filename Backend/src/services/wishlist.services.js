@@ -1,6 +1,6 @@
 const prisma = require("../db/prisma");
 
-async function toggleWishlist({userId, productId}) {
+async function toggleWishlist(userId, productId) {
     const existing = await prisma.wishlistItem.findUnique({
         where: {
             userId_productId: { userId, productId }
@@ -33,7 +33,17 @@ async function getWishlist(userId) {
     });
 };
 
+async function getWishlistIds(userId) {
+  const items = await prisma.wishlistItem.findMany({
+    where: { userId },
+    select: { productId: true }
+  });
+
+  return items.map(item => item.productId);
+};
+
 module.exports = {
     toggleWishlist,
-    getWishlist
+    getWishlist,
+    getWishlistIds
 }

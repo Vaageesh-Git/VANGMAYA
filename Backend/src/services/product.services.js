@@ -30,7 +30,14 @@ async function getProductsByCategory(categorySlug) {
   });
 };
 
+async function getProductsByIds(ids) {
+  return await prisma.product.findMany({
+    where: { id: { in: ids } }
+  });
+}
+
 module.exports = {
     getProductBySlug,
-    getProductsByCategory
+    getProductsByCategory,
+    getProductsByIds
 };
