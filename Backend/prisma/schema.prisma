@@ -14,13 +14,18 @@ datasource db {
 }
 
 model User {
-  id Int @id @default(autoincrement())
-  name String
-  email String @unique
-  password String
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+
+  cartItems     CartItem[]
+  wishlistItems WishlistItem[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
 
 model Category {
   id          String    @id @default(cuid())
@@ -51,8 +56,8 @@ model Product {
 
   brand           String
 
-  price           Int 
-  originalPrice   Int?     
+  price           Int
+  originalPrice   Int?
   discountPercent Int?
 
   stock           Int
@@ -68,9 +73,45 @@ model Product {
   isFeatured      Boolean  @default(false)
   isActive        Boolean  @default(true)
 
+  cartItems       CartItem[]
+  wishlistItems   WishlistItem[]
+
   metaTitle       String?
   metaDescription String?
 
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 }
+
+
+model CartItem {
+  id        String   @id @default(cuid())
+
+  user      User     @relation(fields: [userId], references: [id])
+  userId   Int
+
+  product   Product  @relation(fields: [productId], references: [id])
+  productId String
+
+  quantity  Int      @default(1)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, productId])
+}
+
+model WishlistItem {
+  id        String   @id @default(cuid())
+
+  user      User     @relation(fields: [userId], references: [id])
+  userId   Int
+
+  product   Product  @relation(fields: [productId], references: [id])
+  productId String
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, productId])
+}
+

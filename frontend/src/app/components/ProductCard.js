@@ -13,8 +13,13 @@ const formatPrice = (price) => {
 };
 
 export default function ProductCard({ product, viewMode = 'grid' }) {
-  const [isWishlisted, setIsWishlisted] = useState(false);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
+  const [wishlist, setWishlist] = useState([]);
+
+
+  const toggleWishlist = (productId) => {
+    
+  };
 
   return (
     <article className={`product-card product-card--${viewMode}`}>
@@ -24,6 +29,17 @@ export default function ProductCard({ product, viewMode = 'grid' }) {
           {product.badge}
         </span>
       )}
+
+      {/* Wishlist Button */}
+      <button
+        className={`product-card__wishlist ${wishlist.includes(product.id) ? 'product-card__wishlist--active' : ''}`}
+        onClick={() => toggleWishlist(product.id)}
+        aria-label={wishlist.includes(product.id) ? 'Remove from wishlist' : 'Add to wishlist'}
+      >
+        <svg viewBox="0 0 24 24" fill={wishlist.includes(product.id) ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+        </svg>
+      </button>
 
       {/* Out of Stock */}
       {!product.inStock && (
