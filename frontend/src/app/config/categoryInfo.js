@@ -23,7 +23,7 @@ export const categoryInfoMap = {
     image: "/images/banners/beauty-banner.jpg",
   },
 
-  home_kitchen: {
+  "home-kitchen": {
     name: "Home & Kitchen",
     description:
       "Upgrade your home with quality kitchenware, storage, décor, appliances, and daily essentials.",

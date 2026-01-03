@@ -21,7 +21,7 @@ const categories = [
     id: 3,
     name: 'Home & Kitchen',
     image: '/categories/home&kitchen.png',
-    href: '/category/home-living',
+    href: '/category/home-kitchen',
     icon: '🏠'
   },
   {

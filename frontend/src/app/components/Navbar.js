@@ -9,10 +9,9 @@ import axios from 'axios';
 const categories = [
   { name: 'Electronics', href: '/category/electronics' },
   { name: 'Fashion', href: '/category/fashion' },
-  { name: 'Home & Living', href: '/category/home-living' },
+  { name: 'Home & Living', href: '/category/home-kitchen' },
   { name: 'Beauty', href: '/category/beauty' },
   { name: 'Sports', href: '/category/sports' },
-  // { name: 'Books', href: '/category/books' },
 ];
 
 export default function Navbar() {

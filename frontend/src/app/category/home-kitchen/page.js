@@ -16,6 +16,6 @@ export const metadata = {
 
 export default function HomeLivingPage() {
   return (
-    <CategoryClient categoryName="home_kitchen" />
+    <CategoryClient categoryName="home-kitchen" />
   );
 };
