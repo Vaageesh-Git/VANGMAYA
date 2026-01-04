@@ -1,51 +1,25 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useCart } from '../context/CartContext';
 
 export default function CartClient() {
-  const [cartItems, setCartItems] = useState([
-    {
-      id: 1,
-      name: 'iPhone 15 Pro Max',
-      price: 156900,
-      quantity: 1,
-      image: '/images/products/electronics/iphone-15-pro.jpg',
-    },
-    {
-      id: 2,
-      name: 'Sony WH-1000XM5 Headphones',
-      price: 26990,
-      quantity: 1,
-      image: '/images/products/electronics/sony-headphones.jpg',
-    },
-  ]);
-
-  const updateQuantity = (id, delta) => {
-    setCartItems((items) =>
-      items.map((item) =>
-        item.id === id
-          ? { ...item, quantity: Math.max(1, item.quantity + delta) }
-          : item
-      )
-    );
-  };
-
-  const removeItem = (id) => {
-    setCartItems((items) => items.filter((item) => item.id !== id));
-  };
-
-  const subtotal = cartItems.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
-  );
+  const {cartList , setCartList} = useCart();
+    useEffect(() => {
+        async function fetchCart() {
+            const response = await axios.get(`${BACKEND_URL}/api/cart`);
+            setCartList(response)
+        }
+        fetchCart()
+    },[])
 
   return (
     <main className="cart-page container">
       <h1>Your Cart</h1>
 
-      {cartItems.length === 0 ? (
+      {cartList.length === 0 ? (
         <div className="cart-empty">
           <p>Your cart is empty.</p>
           <Link href="/" className="btn-primary">
@@ -55,7 +29,7 @@ export default function CartClient() {
       ) : (
         <div className="cart-layout">
           <section className="cart-items">
-            {cartItems.map((item) => (
+            {cartList.map((item) => (
               <div key={item.id} className="cart-item">
                 <Image
                   src={item.image}

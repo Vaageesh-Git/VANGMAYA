@@ -1,7 +1,7 @@
 const express = require('express');
-const { validateUserAndProduct, validateUser } = require('../middlewares/wishlist.middlewares');
+const { validateUserAndProduct } = require('../middlewares/wishlist.middlewares');
 const wishlistController = require('../controllers/wishlist.controllers');
-const { authCheck } = require('../middlewares/auth.middlewares');
+const { authCheck, validateUser } = require('../middlewares/auth.middlewares');
 const router = express.Router();
 
 router.use(authCheck)

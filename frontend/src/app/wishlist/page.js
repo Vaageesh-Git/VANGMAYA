@@ -1,4 +1,3 @@
-// app/wishlist/page.js
 import WishlistClient from './wishClient';
 
 export const metadata = {

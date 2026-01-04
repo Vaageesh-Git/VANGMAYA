@@ -1,6 +1,7 @@
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
 import { AuthProvider } from "./context/AuthContext";
+import { CartProvider } from "./context/CartContext";
 import { WishlistProvider } from "./context/WishlistContext";
 import "./globals.css";
 import { Inter } from "next/font/google";
@@ -49,11 +50,13 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={inter.className}>
         <AuthProvider >
-          <WishlistProvider>
-            <Navbar />
-              {children}
-            <Footer />
-          </WishlistProvider>
+          <CartProvider>
+            <WishlistProvider>
+              <Navbar />
+                {children}
+              <Footer />
+            </WishlistProvider>
+          </CartProvider>
         </AuthProvider>
       </body>
     </html>
