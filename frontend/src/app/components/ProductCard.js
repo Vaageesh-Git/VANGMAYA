@@ -3,6 +3,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useWishlist } from '../context/WishlistContext';
+import axios from 'axios';
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 const formatPrice = (price) =>
   new Intl.NumberFormat('en-IN', {
@@ -16,9 +18,14 @@ export default function ProductCard({ product, viewMode = 'grid' }) {
   const isWishlisted = wishlistIds.includes(product.id);
 
 
-  const handleAddToCart = async () => {
-    
-  }
+  const handleAddToCart = async (productId) => {
+    try{
+      const response = await axios.post(`${BACKEND_URL}/api/cart/add`, {productId},  {withCredentials : true});
+      console.log(response)
+    } catch(err){
+      console.error(err.message)
+    }
+  };
 
   return (
     <article className={`product-card product-card--${viewMode}`}>

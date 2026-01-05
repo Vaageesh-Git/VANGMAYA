@@ -12,11 +12,25 @@ export default function CartClient() {
   const {cartList , setCartList} = useCart();
     useEffect(() => {
         async function fetchCart() {
-            const response = await axios.get(`${BACKEND_URL}/api/cart`);
-            setCartList(response)
+          try{
+            const response = await axios.get(`${BACKEND_URL}/api/cart`,
+              {withCredentials : true}
+            );
+            console.log(response.data)
+            setCartList(response.data)
+          } catch(err){
+            console.log(err.message)
+            alert("Internal Server Error")
+          }
         }
         fetchCart()
     },[])
+
+    const subtotal = cartList.reduce(
+      (total, item) => total + item.product.price * item.quantity,
+      0
+    );
+
 
   return (
     <main className="cart-page container">
@@ -43,7 +57,7 @@ export default function CartClient() {
 
                 <div className="cart-item__details">
                   <h2>{item.name}</h2>
-                  <p>₹{item.price.toLocaleString()}</p>
+                  <p>₹{item.product.price.toLocaleString()}</p>
 
                   <div className="cart-item__controls">
                     <button onClick={() => updateQuantity(item.id, -1)}>-</button>
