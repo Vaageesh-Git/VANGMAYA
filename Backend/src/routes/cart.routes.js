@@ -6,5 +6,6 @@ const router = express.Router();
 router.use(authCheck);
 
 router.get('/', validateUser, cartController.getCart);
+router.post('/addtocart', validateUser, cartController.addToCart)
 
 module.exports = router

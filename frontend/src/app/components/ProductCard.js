@@ -13,8 +13,12 @@ const formatPrice = (price) =>
 
 export default function ProductCard({ product, viewMode = 'grid' }) {
   const { wishlistIds, toggleWishlist } = useWishlist();
-
   const isWishlisted = wishlistIds.includes(product.id);
+
+
+  const handleAddToCart = async () => {
+    
+  }
 
   return (
     <article className={`product-card product-card--${viewMode}`}>

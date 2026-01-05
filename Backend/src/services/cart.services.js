@@ -11,6 +11,29 @@ async function getCart(userId) {
     })
 };
 
+async function addToCart(userId, productId) {
+    return prisma.cartItem.upsert({
+        where: {
+            userId_productId: {
+                userId,
+                productId
+            }
+        },
+        update: {
+            quantity: {
+                increment: 1
+            }
+        },
+        create: {
+            userId,
+            productId,
+            quantity: 1
+        }
+    });
+};
+
+
 module.exports = {
-    getCart
-}
+    getCart,
+    addToCart
+};
