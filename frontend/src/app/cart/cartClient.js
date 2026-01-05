@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useCart } from '../context/CartContext';
@@ -16,10 +16,8 @@ export default function CartClient() {
             const response = await axios.get(`${BACKEND_URL}/api/cart`,
               {withCredentials : true}
             );
-            console.log(response.data)
             setCartList(response.data)
           } catch(err){
-            console.log(err.message)
             alert("Internal Server Error")
           }
         }
@@ -50,13 +48,13 @@ export default function CartClient() {
               <div key={item.id} className="cart-item">
                 <Image
                   src={item.image}
-                  alt={item.name}
+                  alt={item.product.name}
                   width={100}
                   height={100}
                 />
 
                 <div className="cart-item__details">
-                  <h2>{item.name}</h2>
+                  <h2>{item.product.name}</h2>
                   <p>₹{item.product.price.toLocaleString()}</p>
 
                   <div className="cart-item__controls">

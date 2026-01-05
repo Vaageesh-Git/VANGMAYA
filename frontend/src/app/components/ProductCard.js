@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useWishlist } from '../context/WishlistContext';
+import { useCart } from '../context/CartContext';
 import axios from 'axios';
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -16,6 +17,7 @@ const formatPrice = (price) =>
 export default function ProductCard({ product, viewMode = 'grid' }) {
   const { wishlistIds, toggleWishlist } = useWishlist();
   const isWishlisted = wishlistIds.includes(product.id);
+  const { cartList, updateQuantity, removeItem } = useCart();
 
 
   const handleAddToCart = async (productId) => {
@@ -26,6 +28,12 @@ export default function ProductCard({ product, viewMode = 'grid' }) {
       console.error(err.message)
     }
   };
+
+  const cartItem = cartList.find(
+    (item) => item.product.id === product.id
+  );
+
+  const quantity = cartItem?.quantity ?? 0;
 
   return (
     <article className={`product-card product-card--${viewMode}`}>
@@ -105,17 +113,45 @@ export default function ProductCard({ product, viewMode = 'grid' }) {
               </>
             )}
         </div>
-      {/* Add to Cart */}
-        <button className="product-card__add-to-cart" onClick={() => handleAddToCart(product.id)}>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <circle cx="9" cy="21" r="1" />
-              <circle cx="20" cy="21" r="1" />
-              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
-            </svg>
-            Add to Cart
+      {/* Add to Cart / Quantity Controls */}
+      {quantity === 0 ? (
+        <button
+          className="product-card__add-to-cart"
+          onClick={() => handleAddToCart(product.id)}
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <circle cx="9" cy="21" r="1" />
+            <circle cx="20" cy="21" r="1" />
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+          </svg>
+          Add to Cart
         </button>
+      ) : (
+        <div className="product-card__qty-controls">
+          <button
+            onClick={() =>
+              quantity === 1
+                ? removeItem(cartItem.id)
+                : updateQuantity(cartItem.id, quantity - 1)
+            }
+          >
+            −
+          </button>
+
+          <span>{quantity}</span>
+
+          <button
+            onClick={() =>
+              updateQuantity(cartItem.id, quantity + 1)
+            }
+          >
+            +
+          </button>
+        </div>
+      )}
+
       </div>
 
     </article>
   );
-}
+};
