@@ -40,10 +40,32 @@ export default function ProductCard({ product, viewMode = 'grid' }) {
       await axios.patch(`${BACKEND_URL}/api/cart/quantity` ,
         {productId,quantity}, {withCredentials : true}
       )
+      setCartList(prev =>
+        prev
+          .map(item =>
+            item.product.id === productId
+              ? { ...item, quantity }
+              : item
+          )
+          .filter(item => item.quantity > 0)
+      );
 
-      
     } catch(err){
       alert("Internal Server Error")
+    }
+  };
+
+  const removeItem = async (productId) => {
+    try{
+      const response = await axios.post(`${BACKEND_URL}/api/cart/delete`, 
+        {productId} , {withCredentials : true})
+      
+        setCartList(prev =>
+          prev.filter(item => item.product.id !== productId)
+        );
+    } catch(err) {
+      console.error(err.message)
+      alert('Internal Server Error')
     }
   };
 
@@ -149,8 +171,8 @@ export default function ProductCard({ product, viewMode = 'grid' }) {
           <button
             onClick={() =>
               quantity === 1
-                ? removeItem(cartItem.id)
-                : updateQuantity(cartItem.id, quantity - 1)
+                ? removeItem(product.id)
+                : updateQuantity(product.id, quantity - 1)
             }
           >
             -
@@ -160,7 +182,7 @@ export default function ProductCard({ product, viewMode = 'grid' }) {
 
           <button
             onClick={() =>
-              updateQuantity(cartItem.id, quantity + 1)
+              updateQuantity(product.id, quantity + 1)
             }
           >
             +
