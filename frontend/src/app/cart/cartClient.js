@@ -24,11 +24,6 @@ export default function CartClient() {
         fetchCart()
     },[])
 
-    const subtotal = cartList.reduce(
-      (total, item) => total + item.product.price * item.quantity,
-      0
-    );
-
     const removeItem = async (productId) => {
       try{
         const response = await axios.post(`${BACKEND_URL}/api/cart/delete`, 
@@ -42,6 +37,31 @@ export default function CartClient() {
         alert('Internal Server Error')
       }
     };
+
+      const updateQuantity = async (productId,quantity) => {
+        try{
+          await axios.patch(`${BACKEND_URL}/api/cart/quantity` ,
+            {productId,quantity}, {withCredentials : true}
+          )
+          setCartList(prev =>
+            prev
+              .map(item =>
+                item.product.id === productId
+                  ? { ...item, quantity }
+                  : item
+              )
+              .filter(item => item.quantity > 0)
+          );
+
+        } catch(err){
+          alert("Internal Server Error")
+        }
+      };
+
+    const subtotal = cartList.reduce(
+      (total, item) => total + item.product.price * item.quantity,
+      0
+    );
 
   return (
     <main className="cart-page container">
@@ -71,9 +91,9 @@ export default function CartClient() {
                   <p>₹{item.product.price.toLocaleString()}</p>
 
                   <div className="cart-item__controls">
-                    <button onClick={() => updateQuantity(item.id, -1)}>-</button>
+                    <button onClick={() => updateQuantity(item.product.id, item.quantity - 1)}>-</button>
                     <span>{item.quantity}</span>
-                    <button onClick={() => updateQuantity(item.id, 1)}>+</button>
+                    <button onClick={() => updateQuantity(item.product.id, item.quantity + 1)}>+</button>
                   </div>
 
                   <button onClick={() => removeItem(item.productId)}>Remove</button>
