@@ -32,8 +32,34 @@ async function addToCart(userId, productId) {
     });
 };
 
+async function removeFromCart(userId,productId) {
+    return await prisma.cartItem.delete({
+        where: {
+            userId_productId: {
+                userId,
+                productId
+            }
+        }
+    });
+};
+
+async function updateCartQuantity(userId,productId,quantity) {
+    return prisma.cartItem.update({
+        where: {
+            userId_productId: {
+                userId,
+                productId
+            }
+        },
+        data: {
+            quantity
+        }
+    });
+};
 
 module.exports = {
     getCart,
-    addToCart
+    addToCart,
+    removeFromCart,
+    updateCartQuantity
 };

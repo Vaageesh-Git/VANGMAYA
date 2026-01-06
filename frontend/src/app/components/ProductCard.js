@@ -17,15 +17,33 @@ const formatPrice = (price) =>
 export default function ProductCard({ product, viewMode = 'grid' }) {
   const { wishlistIds, toggleWishlist } = useWishlist();
   const isWishlisted = wishlistIds.includes(product.id);
-  const { cartList, updateQuantity, removeItem } = useCart();
+  const { cartList, setCartList } = useCart();
 
 
   const handleAddToCart = async (productId) => {
     try{
-      const response = await axios.post(`${BACKEND_URL}/api/cart/add`, {productId},  {withCredentials : true});
-      console.log(response)
+      await axios.post(`${BACKEND_URL}/api/cart/add`, {productId},  {withCredentials : true});
+
+      const response = await axios.get(
+        `${BACKEND_URL}/api/cart`,
+        { withCredentials: true }
+      );
+
+      setCartList(response.data);
     } catch(err){
       console.error(err.message)
+    }
+  };
+
+  const updateQuantity = async (productId,quantity) => {
+    try{
+      await axios.patch(`${BACKEND_URL}/api/cart/quantity` ,
+        {productId,quantity}, {withCredentials : true}
+      )
+
+      
+    } catch(err){
+      alert("Internal Server Error")
     }
   };
 
@@ -135,7 +153,7 @@ export default function ProductCard({ product, viewMode = 'grid' }) {
                 : updateQuantity(cartItem.id, quantity - 1)
             }
           >
-            −
+            -
           </button>
 
           <span>{quantity}</span>

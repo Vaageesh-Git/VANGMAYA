@@ -29,6 +29,19 @@ export default function CartClient() {
       0
     );
 
+    const removeItem = async (productId) => {
+      try{
+        const response = await axios.post(`${BACKEND_URL}/api/cart/delete`, 
+          {productId} , {withCredentials : true})
+        
+          setCartList(prev =>
+            prev.filter(item => item.product.id !== productId)
+          );
+      } catch(err) {
+        console.error(err.message)
+        alert('Internal Server Error')
+      }
+    };
 
   return (
     <main className="cart-page container">
@@ -63,7 +76,7 @@ export default function CartClient() {
                     <button onClick={() => updateQuantity(item.id, 1)}>+</button>
                   </div>
 
-                  <button onClick={() => removeItem(item.id)}>Remove</button>
+                  <button onClick={() => removeItem(item.productId)}>Remove</button>
                 </div>
               </div>
             ))}
