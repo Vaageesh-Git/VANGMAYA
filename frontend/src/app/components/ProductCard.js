@@ -17,8 +17,11 @@ const formatPrice = (price) =>
 export default function ProductCard({ product, viewMode = 'grid' }) {
   const { wishlistIds, toggleWishlist } = useWishlist();
   const isWishlisted = wishlistIds.includes(product.id);
-  const { cartList, setCartList } = useCart();
+  const { cartList, setCartList, cartLoaded } = useCart();
 
+  if (!cartLoaded){
+    return null;
+  }
 
   const handleAddToCart = async (productId) => {
     try{
