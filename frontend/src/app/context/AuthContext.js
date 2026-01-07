@@ -7,15 +7,21 @@ const AuthContext = createContext();
 export function AuthProvider({ children }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState({});
+  const [authLoaded, setAuthLoaded] = useState(false);
 
   const checkAuth = async () => {
     try {
-      await axios.get(
+      const response = await axios.get(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/me`,
         { withCredentials: true }
       );
+
       setIsLoggedIn(true);
+      setUser(response.data.user)
+      setAuthLoaded(true)
     } catch {
+      setUser(null)
       setIsLoggedIn(false);
     } finally {
       setLoading(false);
@@ -24,10 +30,10 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     checkAuth();
-  }, []);
+  }, [isLoggedIn]);
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, loading }}>
+    <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, loading, user, authLoaded }}>
       {children}
     </AuthContext.Provider>
   );

@@ -1,13 +1,15 @@
 "use client";
 
 import Link from "next/link";
+import { useAuth } from '../context/AuthContext';
 
 export default function AccountDashboardClient() {
-  // Mock user data (replace with API later)
-  const user = {
-    name: "Vaageesh Singh",
-    email: "vaageesh@example.com",
-  };
+
+  const { user,authLoaded } = useAuth();
+
+  if (!authLoaded) {
+    return null;
+  }
 
   return (
     <main className="account-dashboard container">

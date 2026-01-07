@@ -51,7 +51,8 @@ async function login({email,password}){
 
     const payload = {
         userId : userData.id,
-        email : userData.email
+        email : userData.email,
+        name : userData.name
     }
 
     const accessToken = jwt.sign(payload,JWT_SECRET,{expiresIn : '1h'})

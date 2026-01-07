@@ -10,7 +10,8 @@ router.get('/me', authCheck, (req,res) => {
     return res.status(200).json({
         user: {
             id: req.user.userId,
-            email: req.user.email
+            email: req.user.email,
+            name : req.user.name
         }
     });
 })
