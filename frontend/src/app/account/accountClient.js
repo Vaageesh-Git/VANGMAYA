@@ -31,8 +31,8 @@ export default function AccountDashboardClient() {
           <nav className="account-nav">
             <Link href="/orders">My Orders</Link>
             <Link href="/wishlist">Wishlist</Link>
-            <Link href="/account/addresses">Addresses</Link>
-            <Link href="/account/profile">Profile Settings</Link>
+            <Link href="/addresses">Addresses</Link>
+            <Link href="//profile">Profile Settings</Link>
             <button className="account-logout">Logout</button>
           </nav>
         </aside>
@@ -52,12 +52,12 @@ export default function AccountDashboardClient() {
               <p>Your saved items</p>
             </Link>
 
-            <Link href="/account/addresses" className="account-card">
+            <Link href="/addresses" className="account-card">
               <h3>Addresses</h3>
               <p>Manage delivery addresses</p>
             </Link>
 
-            <Link href="/account/profile" className="account-card">
+            <Link href="/profile" className="account-card">
               <h3>Profile</h3>
               <p>Edit name, email, and password</p>
             </Link>
