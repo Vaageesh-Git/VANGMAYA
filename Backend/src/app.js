@@ -3,6 +3,7 @@ const authRoutes = require('./routes/auth.routes');
 const productRoutes = require('./routes/product.routes');
 const wishlistRoutes = require('./routes/wishlist.routes');
 const cartRoutes = require('./routes/cart.routes');
+const addressRoutes = require('./routes/address.routes');
 const cookieParser = require("cookie-parser");
 
 const app = express();
@@ -19,5 +20,6 @@ app.use('/api/auth', authRoutes);
 app.use('/api/product', productRoutes);
 app.use('/api/wishlist', wishlistRoutes)
 app.use('/api/cart', cartRoutes)
+app.use('/api/addresses',addressRoutes)
 
 module.exports = app;

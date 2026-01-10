@@ -13,8 +13,51 @@ export default function AddressesClient() {
 
   const [addresses, setAddresses] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [form, setForm] = useState({
+    name: "",
+    phone: "",
+    line1: "",
+    line2: "",
+    city: "",
+    state: "",
+    pincode: ""
+  });
 
-  // 🔐 Protect route
+  const handleChange = (e) => {
+    setForm(prev => ({
+      ...prev,
+      [e.target.name]: e.target.value
+    }));
+  };
+
+  const handleAddAddress = async () => {
+    try {
+      const res = await axios.post(
+        `${BACKEND_URL}/api/addresses`,
+        form,
+        { withCredentials: true }
+      );
+
+      setAddresses(prev => [res.data, ...prev]);
+      setShowModal(false);
+
+      setForm({
+        name: "",
+        phone: "",
+        line1: "",
+        line2: "",
+        city: "",
+        state: "",
+        pincode: ""
+      });
+    } catch {
+      alert("Failed to add address");
+    }
+  };
+
+
+
   useEffect(() => {
     if (!authLoaded) return;
     if (!isLoggedIn) router.replace("/login");
@@ -49,7 +92,13 @@ export default function AddressesClient() {
       {addresses.length === 0 ? (
         <div className="addresses-empty">
           <p>You haven’t added any addresses yet.</p>
-          <button className="btn-primary">Add New Address</button>
+          <button
+              className="btn-primary"
+              onClick={() => setShowModal(true)}
+            >
+              Add New Address
+          </button>
+
         </div>
       ) : (
         <div className="address-list">
@@ -83,6 +132,71 @@ export default function AddressesClient() {
           ))}
         </div>
       )}
+
+      {showModal && (
+        <div className="modal-backdrop">
+          <div className="modal">
+            <h2>Add New Address</h2>
+
+            <input
+              name="name"
+              placeholder="Full Name"
+              value={form.name}
+              onChange={handleChange}
+            />
+
+            <input
+              name="phone"
+              placeholder="Phone Number"
+              value={form.phone}
+              onChange={handleChange}
+            />
+
+            <input
+              name="line1"
+              placeholder="Address Line 1"
+              value={form.line1}
+              onChange={handleChange}
+            />
+
+            <input
+              name="line2"
+              placeholder="Address Line 2 (optional)"
+              value={form.line2}
+              onChange={handleChange}
+            />
+
+            <input
+              name="city"
+              placeholder="City"
+              value={form.city}
+              onChange={handleChange}
+            />
+
+            <input
+              name="state"
+              placeholder="State"
+              value={form.state}
+              onChange={handleChange}
+            />
+
+            <input
+              name="pincode"
+              placeholder="Pincode"
+              value={form.pincode}
+              onChange={handleChange}
+            />
+
+            <div className="modal-actions">
+              <button onClick={() => setShowModal(false)}>Cancel</button>
+              <button className="btn-primary" onClick={handleAddAddress}>
+                Save Address
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </main>
   );
 }
