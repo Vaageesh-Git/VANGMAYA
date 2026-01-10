@@ -1,5 +1,6 @@
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
+import { AddressProvider } from "./context/AddressContext";
 import { AuthProvider } from "./context/AuthContext";
 import { CartProvider } from "./context/CartContext";
 import { WishlistProvider } from "./context/WishlistContext";
@@ -51,11 +52,13 @@ export default function RootLayout({ children }) {
       <body className={inter.className}>
         <AuthProvider >
           <CartProvider>
-            <WishlistProvider>
-              <Navbar />
-                {children}
-              <Footer />
-            </WishlistProvider>
+            <AddressProvider >
+              <WishlistProvider>
+                <Navbar />
+                  {children}
+                <Footer />
+              </WishlistProvider>
+            </AddressProvider>
           </CartProvider>
         </AuthProvider>
       </body>

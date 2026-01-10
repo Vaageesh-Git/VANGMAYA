@@ -4,15 +4,15 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { useRouter } from "next/navigation";
+import { useAddress } from "../context/AddressContext";
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export default function AddressesClient() {
   const { isLoggedIn, authLoaded } = useAuth();
+  const {addresses, setAddresses, addressLoaded } = useAddress();
   const router = useRouter();
 
-  const [addresses, setAddresses] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
@@ -132,27 +132,7 @@ export default function AddressesClient() {
     if (!isLoggedIn) router.replace("/login");
   }, [authLoaded, isLoggedIn, router]);
 
-  useEffect(() => {
-    if (!isLoggedIn) return;
-
-    async function fetchAddresses() {
-      try {
-        const res = await axios.get(
-          `${BACKEND_URL}/api/addresses`,
-          { withCredentials: true }
-        );
-        setAddresses(res.data);
-      } catch {
-        setAddresses([]);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchAddresses();
-  }, [isLoggedIn]);
-
-  if (!authLoaded || !isLoggedIn || loading) return null;
+  if (!authLoaded || !isLoggedIn || !addressLoaded) return null;
 
   return (
     <main className="addresses-page container">

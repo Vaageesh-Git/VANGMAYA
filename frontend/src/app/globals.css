@@ -3986,3 +3986,46 @@ input, textarea {
     opacity: 1;
   }
 }
+
+.checkout-layout {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 24px;
+}
+
+.checkout-section {
+  background: #fff;
+  padding: 18px;
+  border-radius: 12px;
+  margin-bottom: 18px;
+}
+
+.checkout-address {
+  display: flex;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  margin-bottom: 12px;
+  cursor: pointer;
+}
+
+.checkout-summary {
+  background: #fafafa;
+  padding: 18px;
+  border-radius: 12px;
+  position: sticky;
+  top: 100px;
+  height: fit-content;
+}
+
+@media (max-width: 768px) {
+  .checkout-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .checkout-summary {
+    position: static;
+    margin-top: 12px;
+  }
+}
