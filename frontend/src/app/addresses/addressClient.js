@@ -34,7 +34,30 @@ export default function AddressesClient() {
     }));
   };
 
+  const validateForm = () => {
+    const { name, phone, line1, city, state, pincode } = form;
+
+    if (!name || !phone || !line1 || !city || !state || !pincode) {
+      alert("All fields except Address Line 2 are required");
+      return false;
+    }
+
+    if (!/^\d{10,}$/.test(phone)) {
+      alert("Phone number must be at least 10 digits");
+      return false;
+    }
+
+    if (!/^\d{6}$/.test(pincode)) {
+      alert("Pincode must be exactly 6 digits");
+      return false;
+    }
+
+    return true;
+  };
+
+
   const handleAddAddress = async () => {
+    if (!validateForm()) return;
     try {
       const res = await axios.post(
         `${BACKEND_URL}/api/addresses`,
@@ -80,6 +103,7 @@ export default function AddressesClient() {
   };
 
   const handleEditAddress = async () => {
+    if (!validateForm()) return;
     try {
       const res = await axios.patch(
         `${BACKEND_URL}/api/addresses`,
@@ -168,11 +192,16 @@ export default function AddressesClient() {
                 Edit
               </button>
 
-                <button
-                  onClick={() => handleDeleteAddress(addr.id)}
-                >
-                  Delete
-                </button>
+              <button
+                onClick={() => {
+                  if (window.confirm("Are you sure you want to delete this address?")) {
+                    handleDeleteAddress(addr.id);
+                  }
+                }}
+              >
+                Delete
+              </button>
+
               </div>
             </div>
           ))}
