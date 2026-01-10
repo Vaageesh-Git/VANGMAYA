@@ -40,19 +40,24 @@ export default function CheckoutClient() {
             <h2>Delivery Address</h2>
 
             {addresses.map(addr => (
-              <label key={addr.id} className="checkout-address">
+            <label key={addr.id} className="checkout-address">
                 <input
-                  type="radio"
-                  checked={selectedAddress === addr.id}
-                  onChange={() => setSelectedAddress(addr.id)}
+                    type="radio"
+                    name="deliveryAddress"
+                    value={addr.id}
+                    checked={selectedAddress === addr.id}
+                    onChange={(e) => setSelectedAddress(Number(e.target.value))}
                 />
                 <div>
-                  <strong>{addr.name}</strong>
-                  <p>{addr.line1}, {addr.city}, {addr.state} - {addr.pincode}</p>
-                  <p>📞 {addr.phone}</p>
+                <strong>{addr.name}</strong>
+                <p>
+                    {addr.line1}, {addr.city}, {addr.state} - {addr.pincode}
+                </p>
+                <p>📞 {addr.phone}</p>
                 </div>
-              </label>
+            </label>
             ))}
+
           </div>
 
           {/* Payment */}
@@ -87,7 +92,7 @@ export default function CheckoutClient() {
 
         <button
             className="btn-primary btn-place-order"
-            disabled={!selectedAddress}
+            disabled={selectedAddress === null}
         >
             Place Order
         </button>
