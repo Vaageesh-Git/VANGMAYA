@@ -8,5 +8,8 @@ router.use(authCheck);
 router.use(validateUser);
 
 router.get('/', addressController.getAllAddresses);
+router.post('/', addressController.addNewAddress);
+router.delete('/', addressController.deleteAddress);
+router.patch('/', addressController.editAddress);
 
 module.exports = router

@@ -14,6 +14,9 @@ export default function AddressesClient() {
   const [addresses, setAddresses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
+  const [editingId, setEditingId] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
+
   const [form, setForm] = useState({
     name: "",
     phone: "",
@@ -56,6 +59,48 @@ export default function AddressesClient() {
     }
   };
 
+  const handleDeleteAddress = async (id) => {
+    setAddresses(
+      addresses.filter((address,ind) => 
+        address.id !== id
+      )
+    )
+
+    try{
+      await axios.delete(
+        `${BACKEND_URL}/api/addresses`, {
+          data : {id},
+          withCredentials : true
+        }
+      );
+       
+    } catch(err){
+      alert("Failed to Delete address");
+    }
+  };
+
+  const handleEditAddress = async () => {
+    try {
+      const res = await axios.patch(
+        `${BACKEND_URL}/api/addresses`,
+        { id: editingId, ...form },
+        { withCredentials: true }
+      );
+
+      setAddresses(prev =>
+        prev.map(addr =>
+          addr.id === editingId ? res.data : addr
+        )
+      );
+
+      setShowModal(false);
+      setIsEditing(false);
+      setEditingId(null);
+    } catch (err) {
+      alert("Failed to Update address");
+    }
+  };
+
 
 
   useEffect(() => {
@@ -88,19 +133,6 @@ export default function AddressesClient() {
   return (
     <main className="addresses-page container">
       <h1>My Addresses</h1>
-
-      {addresses.length === 0 ? (
-        <div className="addresses-empty">
-          <p>You haven’t added any addresses yet.</p>
-          <button
-              className="btn-primary"
-              onClick={() => setShowModal(true)}
-            >
-              Add New Address
-          </button>
-
-        </div>
-      ) : (
         <div className="address-list">
           {addresses.map(addr => (
             <div key={addr.id} className="address-card">
@@ -117,13 +149,27 @@ export default function AddressesClient() {
               <p className="address-phone">📞 {addr.phone}</p>
 
               <div className="address-actions">
-                <button>Edit</button>
+              <button
+                onClick={() => {
+                  setIsEditing(true);
+                  setEditingId(addr.id);
+                  setForm({
+                    name: addr.name,
+                    phone: addr.phone,
+                    line1: addr.line1,
+                    line2: addr.line2 || "",
+                    city: addr.city,
+                    state: addr.state,
+                    pincode: addr.pincode
+                  });
+                  setShowModal(true);
+                }}
+              >
+                Edit
+              </button>
+
                 <button
-                  onClick={() =>
-                    setAddresses(prev =>
-                      prev.filter(a => a.id !== addr.id)
-                    )
-                  }
+                  onClick={() => handleDeleteAddress(addr.id)}
                 >
                   Delete
                 </button>
@@ -131,7 +177,13 @@ export default function AddressesClient() {
             </div>
           ))}
         </div>
-      )}
+
+        <button
+          className="btn-primary"
+          onClick={() => setShowModal(true)}
+        >
+          Add New Address
+        </button>
 
       {showModal && (
         <div className="modal-backdrop">
@@ -189,9 +241,13 @@ export default function AddressesClient() {
 
             <div className="modal-actions">
               <button onClick={() => setShowModal(false)}>Cancel</button>
-              <button className="btn-primary" onClick={handleAddAddress}>
+              <button
+                className="btn-primary"
+                onClick={isEditing ? handleEditAddress : handleAddAddress}
+              >
                 Save Address
               </button>
+
             </div>
           </div>
         </div>

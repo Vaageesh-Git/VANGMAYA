@@ -35,9 +35,8 @@ const login = async (req,res) => {
         }
         console.log(err.message)
         return res.status(500).json({ message: "Internal Server Error" });
-
     }
-}
+};
 
 module.exports = {
     signup,
