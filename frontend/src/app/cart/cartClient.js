@@ -39,6 +39,10 @@ export default function CartClient() {
     };
 
       const updateQuantity = async (productId,quantity) => {
+        if (quantity === 0){
+          removeItem(productId)
+          return;
+        };
         try{
           await axios.patch(`${BACKEND_URL}/api/cart/quantity` ,
             {productId,quantity}, {withCredentials : true}

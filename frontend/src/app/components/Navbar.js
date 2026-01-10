@@ -5,6 +5,9 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useAuth } from "../context/AuthContext";
 import axios from 'axios';
+import { useCart } from '../context/CartContext';
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+
 
 const categories = [
   { name: 'Electronics', href: '/category/electronics' },
@@ -18,7 +21,10 @@ export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
+  const [cartCount, setCartCount] = useState(0);
   const { isLoggedIn, loading } = useAuth();
+  const {cartList } = useCart();
+
 
   useEffect(() => {
     const handleScroll = () => {
@@ -36,6 +42,22 @@ export default function Navbar() {
       document.body.style.overflow = '';
     }
   }, [isMobileMenuOpen]);
+
+
+  useEffect(() => {
+    if (!isLoggedIn) return;
+    async function fetchCart() {
+      try{
+        const response = await axios.get(`${BACKEND_URL}/api/cart`,
+          {withCredentials : true}
+        );
+        setCartCount(response.data.length)
+      } catch(err){
+        alert("Internal Server Error")
+      }
+    }
+    fetchCart()
+  },[cartList])
 
   return (
     <header className={`navbar ${isScrolled ? 'navbar--scrolled' : ''}`}>
@@ -130,7 +152,7 @@ export default function Navbar() {
               <circle cx="20" cy="21" r="1" />
               <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
             </svg>
-            <span className="navbar__cart-count">0</span>
+            <span className="navbar__cart-count">{cartCount}</span>
             <span className="navbar__action-label">Cart</span>
           </Link>
 

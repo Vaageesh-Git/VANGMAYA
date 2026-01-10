@@ -32,7 +32,6 @@ export default function AccountDashboardClient() {
             <Link href="/orders">My Orders</Link>
             <Link href="/wishlist">Wishlist</Link>
             <Link href="/addresses">Addresses</Link>
-            <Link href="//profile">Profile Settings</Link>
             <button className="account-logout">Logout</button>
           </nav>
         </aside>
