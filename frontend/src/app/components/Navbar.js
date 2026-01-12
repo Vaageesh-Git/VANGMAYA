@@ -21,9 +21,8 @@ export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
-  const [cartCount, setCartCount] = useState(0);
   const { isLoggedIn, loading } = useAuth();
-  const {cartList } = useCart();
+  const { cartList,cartCount, setCartCount } = useCart();
 
 
   useEffect(() => {

@@ -11,6 +11,7 @@ export function CartProvider({children}){
     const { isLoggedIn } = useAuth();
     const [cartList, setCartList] = useState([]);
     const [cartLoaded , setCartLoaded] = useState(false);
+    const [cartCount, setCartCount] = useState(0);
 
     useEffect(() => {
         async function fetchCart() {
@@ -27,7 +28,7 @@ export function CartProvider({children}){
     },[isLoggedIn])
 
     return (
-        <CartContext.Provider value={{cartList, setCartList, cartLoaded}}>
+        <CartContext.Provider value={{cartList, setCartList, cartLoaded, cartCount, setCartCount}}>
             {children}
         </CartContext.Provider>
     )

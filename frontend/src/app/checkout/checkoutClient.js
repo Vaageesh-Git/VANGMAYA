@@ -5,13 +5,14 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
 import { useAddress } from "../context/AddressContext";
+import axios from "axios";
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export default function CheckoutClient() {
   const router = useRouter();
   const { isLoggedIn, authLoaded } = useAuth();
-  const { cartList } = useCart();
+  const { cartList, setCartList, setCartCount } = useCart();
   const {addresses} = useAddress();
   const [selectedAddress, setSelectedAddress] = useState(null);
 
@@ -25,6 +26,26 @@ export default function CheckoutClient() {
       router.replace("/cart");
     }
   }, [cartList, router]);
+
+
+  const handlePlaceOrder = async () => {
+    try {
+
+      await axios.post(
+        `${BACKEND_URL}/api/order/place`,
+        { addressId: selectedAddress },
+        { withCredentials: true }
+      );
+
+      alert("Order Placed Successfully");
+      setCartList([]);
+      setCartCount(0);
+
+    } catch (err) {
+      console.error(err);
+      alert("Failed to Place Order");
+    }
+  };
 
   if (!authLoaded) return null;
 
@@ -93,6 +114,7 @@ export default function CheckoutClient() {
         <button
             className="btn-primary btn-place-order"
             disabled={selectedAddress === null}
+            onClick={handlePlaceOrder}
         >
             Place Order
         </button>
