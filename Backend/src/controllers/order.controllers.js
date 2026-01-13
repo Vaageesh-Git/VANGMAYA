@@ -26,7 +26,20 @@ const getAllOrders = async (req,res) => {
     }
 };
 
+const getOrderDetails = async (req,res) => {
+    try{
+        const userId = req.user.userId;
+        const { orderId } = req.params;
+        const orderDetails = await orderServices.getOrderDetails(userId,orderId);
+        return res.status(200).json(orderDetails)
+
+    } catch(err){
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
+};
+
 module.exports = {
     placeOrder,
-    getAllOrders
-}
+    getAllOrders,
+    getOrderDetails
+};

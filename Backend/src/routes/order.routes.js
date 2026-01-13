@@ -10,6 +10,7 @@ router.use(validateUser)
 
 router.post('/place', orderController.placeOrder);
 router.get('/', orderController.getAllOrders);
+router.get('/:orderId', orderController.getOrderDetails);
 
 module.exports = router
 

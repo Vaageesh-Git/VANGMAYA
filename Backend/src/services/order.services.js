@@ -98,7 +98,35 @@ async function getAllOrders(userId) {
   });
 };
 
+
+async function getOrderDetails(userId, orderId) {
+  return await prisma.order.findFirst({
+    where: {
+      id: orderId,
+      userId
+    },
+    include: {
+      address: true,
+      items: {
+        include: {
+          product: {
+            select: {
+              id: true,
+              name: true,
+              slug: true,
+              thumbnail: true,
+              price: true,
+              description: true
+            }
+          }
+        }
+      }
+    }
+  });
+};
+
 module.exports = { 
   placeOrder,
-  getAllOrders
+  getAllOrders,
+  getOrderDetails
  };
