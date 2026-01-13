@@ -9,13 +9,23 @@ import Link from "next/link";
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export default function ProfileClient() {
-  const { isLoggedIn, authLoaded, user } = useAuth();
+  const { isLoggedIn, setIsLoggedIn , authLoaded, user } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
     if (!authLoaded) return;
-    if (!isLoggedIn) router.replace("/login");
+    if (!isLoggedIn) router.replace("/");
   }, [authLoaded, isLoggedIn, router]);
+
+  const handleLogout = async () => {
+    try{
+        await axios.post(`${BACKEND_URL}/api/auth/logout`, {}, {withCredentials : true})
+        setIsLoggedIn(false)
+        
+    } catch(err){
+        alert("Failed To Logout")
+    }
+  };
 
   if (!authLoaded || !isLoggedIn ) return null;
   if (!user) return null;
@@ -44,7 +54,7 @@ export default function ProfileClient() {
           Manage Addresses →
         </Link>
 
-        <button className="logout-btn">
+        <button className="logout-btn" onClick={handleLogout}>
           Logout
         </button>
       </section>

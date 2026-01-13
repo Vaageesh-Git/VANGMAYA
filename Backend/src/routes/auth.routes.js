@@ -14,6 +14,8 @@ router.get('/me', authCheck, (req,res) => {
             name : req.user.name
         }
     });
-})
+});
+
+router.post("/logout", authController.logout);
 
 module.exports = router
