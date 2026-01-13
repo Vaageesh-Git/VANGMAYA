@@ -8,7 +8,8 @@ const router = express.Router();
 router.use(authCheck);
 router.use(validateUser)
 
-router.post('/place',orderController.placeOrder);
+router.post('/place', orderController.placeOrder);
+router.get('/', orderController.getAllOrders);
 
 module.exports = router
 

@@ -69,6 +69,36 @@ async function placeOrder(userId, addressId) {
 
     return order;
   });
-}
+};
 
-module.exports = { placeOrder };
+async function getAllOrders(userId) {
+  return await prisma.order.findMany({
+    where: {
+      userId
+    },
+    orderBy: {
+      createdAt: "desc"
+    },
+    include: {
+      address: true,
+      items: {
+        include: {
+          product: {
+            select: {
+              id: true,
+              name: true,
+              slug: true,
+              thumbnail: true,
+              price: true
+            }
+          }
+        }
+      }
+    }
+  });
+};
+
+module.exports = { 
+  placeOrder,
+  getAllOrders
+ };

@@ -30,7 +30,7 @@ export default function OrdersClient() {
     async function fetchOrders() {
       try {
         const res = await axios.get(
-          `${BACKEND_URL}/api/orders`,
+          `${BACKEND_URL}/api/order`,
           { withCredentials: true }
         );
         setOrders(res.data);
