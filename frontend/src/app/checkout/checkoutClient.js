@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
 import { useAddress } from "../context/AddressContext";
+import Link from "next/link";
 import axios from "axios";
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
@@ -30,7 +31,6 @@ export default function CheckoutClient() {
 
   const handlePlaceOrder = async () => {
     try {
-
       await axios.post(
         `${BACKEND_URL}/api/order/place`,
         { addressId: selectedAddress },
@@ -60,7 +60,7 @@ export default function CheckoutClient() {
           <div className="checkout-section">
             <h2>Delivery Address</h2>
 
-            {addresses.map(addr => (
+            { addresses.length > 0 ? addresses.map(addr => (
             <label key={addr.id} className="checkout-address">
                 <input
                     type="radio"
@@ -77,7 +77,15 @@ export default function CheckoutClient() {
                 <p>📞 {addr.phone}</p>
                 </div>
             </label>
-            ))}
+            ))
+            :      
+            <Link
+              className="btn-primary"
+              href="/addresses"
+            >
+              Add New Address
+            </Link>
+          }
 
           </div>
 
