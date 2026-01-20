@@ -24,6 +24,12 @@ export default function Navbar() {
   const { isLoggedIn, loading } = useAuth();
   const { cartList,cartCount, setCartCount } = useCart();
 
+  const [query, setQuery] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  const [showResults, setShowResults] = useState(false);
+  const [searchLoading, setSearchLoading] = useState(false);
+
+
 
   useEffect(() => {
     const handleScroll = () => {
@@ -57,6 +63,35 @@ export default function Navbar() {
     }
     fetchCart()
   },[cartList])
+
+  useEffect(() => {
+    if (!query.trim()) {
+      setSearchResults([]);
+      setShowResults(false);
+      return;
+    }
+
+    async function serachProducts() {
+      try {
+        setSearchLoading(true);
+
+        const response = await axios.get(
+          `${BACKEND_URL}/api/search?searchQuery=${query}`
+        );
+
+        setSearchResults(response.data);
+        setShowResults(true);  
+      } catch (err) {
+        alert('Can Not Fetch Products');
+      } finally {
+        setSearchLoading(false);
+        console.log(searchResults)
+      }
+    }
+
+    serachProducts();
+  }, [query]);
+
 
   return (
     <header className={`navbar ${isScrolled ? 'navbar--scrolled' : ''}`}>
@@ -116,15 +151,41 @@ export default function Navbar() {
               id="search"
               className="navbar__search-input"
               placeholder="Search for products, brands..."
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              onFocus={() => query && setShowResults(true)}
             />
+
             <button type="submit" className="navbar__search-btn" aria-label="Search">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <circle cx="11" cy="11" r="8" />
                 <path d="M21 21l-4.35-4.35" />
               </svg>
             </button>
+
+                    {showResults && (
+          <div className="navbar__search-results">
+            {searchLoading && <p className="search-loading">Searching...</p>}
+
+            {!searchLoading && searchResults.length === 0 && (
+              <p className="search-empty">No results found</p>
+            )}
+
+            {searchResults.map((item) => (
+                  <Link
+                    key={item.id}
+                    href={`/product/${item.slug}`}
+                    className="search-result-item"
+                    onClick={() => setShowResults(false)}
+                  >
+                    <span>{item.name}</span>
+                  </Link>
+                ))}
+              </div>
+            )}
           </form>
         </div>
+
 
         {/* Action Icons */}
         <div className="navbar__actions">
