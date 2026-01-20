@@ -6,6 +6,8 @@ import Image from 'next/image';
 import { useAuth } from "../context/AuthContext";
 import axios from 'axios';
 import { useCart } from '../context/CartContext';
+import { useRouter } from "next/navigation";
+
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 
@@ -18,6 +20,8 @@ const categories = [
 ];
 
 export default function Navbar() {
+  const router = useRouter();
+
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
@@ -29,7 +33,14 @@ export default function Navbar() {
   const [showResults, setShowResults] = useState(false);
   const [searchLoading, setSearchLoading] = useState(false);
 
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
 
+    if (!query.trim()) return;
+
+      setShowResults(false);
+      router.push(`/search?q=${query}`);
+  }
 
   useEffect(() => {
     const handleScroll = () => {
@@ -85,7 +96,6 @@ export default function Navbar() {
         alert('Can Not Fetch Products');
       } finally {
         setSearchLoading(false);
-        console.log(searchResults)
       }
     }
 
@@ -144,7 +154,7 @@ export default function Navbar() {
           </div>
 
           {/* Search Bar */}
-          <form className="navbar__search" role="search">
+          <form className="navbar__search" role="search" onSubmit={handleSearchSubmit}>
             <label htmlFor="search" className="visually-hidden">Search products</label>
             <input
               type="search"
