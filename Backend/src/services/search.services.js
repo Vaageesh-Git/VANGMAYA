@@ -1,44 +1,21 @@
 const prisma = require("../db/prisma");
 
 async function searchProductByQuery(query) {
+  if (!query || !query.trim()) return [];
+
+  const q = query.toLowerCase().replace(/[\s-]/g, "");
+
   return await prisma.product.findMany({
     where: {
       isActive: true,
       inStock: true,
-      OR: [
-        {
-          name: {
-            contains: query,
-          },
-        },
-        {
-          brand: {
-            contains: query,
-          },
-        },
-        {
-          shortDescription: {
-            contains: query,
-          },
-        },
-      ],
-    },
-    select: {
-      id: true,
-      name: true,
-      slug: true,
-      price: true,
-      thumbnail: true,
-      category: {
-        select: {
-          name: true,
-          slug: true,
-        },
+      searchKey: {
+        contains: q,
       },
     },
     take: 8,
   });
-};
+}
 
 
 module.exports = {
