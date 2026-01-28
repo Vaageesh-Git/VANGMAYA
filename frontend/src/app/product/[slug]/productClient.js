@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-export default function ProductClient({ product }) {
+export default async function ProductClient({ product }) {
   return (
     <main className="product-page container">
       {/* Breadcrumb */}

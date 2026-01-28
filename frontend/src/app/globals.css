@@ -1047,6 +1047,8 @@ input, textarea {
   overflow: hidden;
   box-shadow: var(--shadow-sm);
   transition: all var(--transition-base);
+  width: 100%;
+  max-width: 200px; 
 }
 
 .product-card:hover {
@@ -1173,6 +1175,13 @@ input, textarea {
 @media (min-width: 768px) {
   .product-card__title {
     font-size: 0.9375rem;
+  }
+
+}
+
+@media (max-width: 400px) {
+  .product-card{
+    max-width: 160px;
   }
 }
 
@@ -3570,6 +3579,9 @@ input, textarea {
 .product-images img {
   border-radius: 12px;
   background: #fafafa;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
 }
 
 /* Info */
@@ -3626,6 +3638,7 @@ input, textarea {
   border-radius: 6px;
   border: none;
   cursor: pointer;
+  font-size: 5rem;
 }
 
 .btn-secondary {
@@ -3644,6 +3657,24 @@ input, textarea {
 .product-description p {
   color: #555;
   line-height: 1.6;
+}
+
+@media (max-width: 415px) {
+  .price{
+    font-size: 1rem;
+  }
+
+  .product-info h1 {
+    font-size: 1.3rem;
+  }
+
+  .product-actions button{
+    font-size: 0.8rem;
+  }
+
+  .product-description{
+    font-size: 0.7rem;
+  }
 }
 
 /* Container */
@@ -4324,3 +4355,4 @@ input, textarea {
     transform: translateY(0);
   }
 }
+

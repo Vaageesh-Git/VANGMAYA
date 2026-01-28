@@ -1,10 +1,10 @@
 import axios from "axios";
-import Link from "next/link";
+import ProductCard from '../components/ProductCard';
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export default async function SearchPage({ searchParams }) {
-  const query = searchParams?.q || "";
+  const { q: query = "" } = await searchParams;
 
   if (!query) {
     return <p style={{ padding: 20 }}>No search query</p>;
@@ -15,7 +15,6 @@ export default async function SearchPage({ searchParams }) {
   );
 
   const products = res.data;
-  console.log(products)
 
   return (
     <div className="search-page container">
@@ -27,15 +26,11 @@ export default async function SearchPage({ searchParams }) {
 
       <div className="search-grid">
         {products.map((product) => (
-          <Link
+          <ProductCard
             key={product.id}
-            href={`/product/${product.slug}`}
-            className="search-card"
-          >
-            <img src={product.thumbnail} alt={product.name} />
-            <h3>{product.name}</h3>
-            <p>₹{product.price}</p>
-          </Link>
+            product={product}
+            viewMode="grid"
+          />
         ))}
       </div>
     </div>
