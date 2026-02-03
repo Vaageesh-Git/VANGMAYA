@@ -26,7 +26,7 @@ const addToCart = async (req,res) => {
 const removeFromCart = async (req,res) => {
     try{
         const userId = req.user.userId;
-        const {productId} = req.body;
+        const {productId} = req.params;
         const result = await cartServices.removeFromCart(userId,productId)
         return res.status(200).json(result)
 

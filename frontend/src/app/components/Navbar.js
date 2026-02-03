@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useAuth } from "../context/AuthContext";
-import axios from 'axios';
 import { useCart } from '../context/CartContext';
 import { useRouter } from "next/navigation";
 
@@ -26,7 +25,7 @@ export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
   const { isLoggedIn, loading } = useAuth();
-  const { cartList,cartCount, setCartCount } = useCart();
+  const { cartCount } = useCart();
 
   const [query, setQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
@@ -60,20 +59,6 @@ export default function Navbar() {
   }, [isMobileMenuOpen]);
 
 
-  useEffect(() => {
-    if (!isLoggedIn) return;
-    async function fetchCart() {
-      try{
-        const response = await axios.get(`${BACKEND_URL}/api/cart`,
-          {withCredentials : true}
-        );
-        setCartCount(response.data.length)
-      } catch(err){
-        alert("Internal Server Error")
-      }
-    }
-    fetchCart()
-  },[cartList])
 
   useEffect(() => {
     if (!query.trim()) {

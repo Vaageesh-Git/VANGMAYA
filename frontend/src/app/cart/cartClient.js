@@ -1,71 +1,24 @@
 'use client';
 
-import { useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useCart } from '../context/CartContext';
-import axios from 'axios';
-
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export default function CartClient() {
-  const {cartList , setCartList} = useCart();
-    useEffect(() => {
-        async function fetchCart() {
-          try{
-            const response = await axios.get(`${BACKEND_URL}/api/cart`,
-              {withCredentials : true}
-            );
-            setCartList(response.data)
-          } catch(err){
-            alert("Internal Server Error")
-          }
-        }
-        fetchCart()
-    },[])
+  const {
+    cartList,
+    cartLoaded,
+    increment,
+    decrement,
+    removeFromCart,
+  } = useCart();
 
-    const removeItem = async (productId) => {
-      try{
-        const response = await axios.post(`${BACKEND_URL}/api/cart/delete`, 
-          {productId} , {withCredentials : true})
-        
-          setCartList(prev =>
-            prev.filter(item => item.product.id !== productId)
-          );
-      } catch(err) {
-        console.error(err.message)
-        alert('Internal Server Error')
-      }
-    };
+  if (!cartLoaded) return null;
 
-      const updateQuantity = async (productId,quantity) => {
-        if (quantity === 0){
-          removeItem(productId)
-          return;
-        };
-        try{
-          await axios.patch(`${BACKEND_URL}/api/cart/quantity` ,
-            {productId,quantity}, {withCredentials : true}
-          )
-          setCartList(prev =>
-            prev
-              .map(item =>
-                item.product.id === productId
-                  ? { ...item, quantity }
-                  : item
-              )
-              .filter(item => item.quantity > 0)
-          );
-
-        } catch(err){
-          alert("Internal Server Error")
-        }
-      };
-
-    const subtotal = cartList.reduce(
-      (total, item) => total + item.product.price * item.quantity,
-      0
-    );
+  const subtotal = cartList.reduce(
+    (total, item) => total + item.product.price * item.quantity,
+    0
+  );
 
   return (
     <main className="cart-page container">
@@ -82,9 +35,9 @@ export default function CartClient() {
         <div className="cart-layout">
           <section className="cart-items">
             {cartList.map((item) => (
-              <div key={item.id} className="cart-item">
+              <div key={item.product.id} className="cart-item">
                 <Image
-                  src={item.image}
+                  src={item.product.thumbnail}
                   alt={item.product.name}
                   width={100}
                   height={100}
@@ -95,12 +48,21 @@ export default function CartClient() {
                   <p>₹{item.product.price.toLocaleString()}</p>
 
                   <div className="cart-item__controls">
-                    <button onClick={() => updateQuantity(item.product.id, item.quantity - 1)}>-</button>
+                    <button onClick={() => decrement(item.product.id)}>
+                      -
+                    </button>
                     <span>{item.quantity}</span>
-                    <button onClick={() => updateQuantity(item.product.id, item.quantity + 1)}>+</button>
+                    <button onClick={() => increment(item.product.id)}>
+                      +
+                    </button>
                   </div>
 
-                  <button onClick={() => removeItem(item.productId)}>Remove</button>
+                  <button
+                    className="cart-item__remove"
+                    onClick={() => removeFromCart(item.product.id)}
+                  >
+                    Remove
+                  </button>
                 </div>
               </div>
             ))}

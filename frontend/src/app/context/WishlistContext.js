@@ -3,6 +3,8 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { useAuth } from './AuthContext';
+import { usePathname } from 'next/navigation';
+
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 const GUEST_KEY = 'vangmaya_wishlist';
@@ -10,6 +12,7 @@ const GUEST_KEY = 'vangmaya_wishlist';
 const WishlistContext = createContext();
 
 export function WishlistProvider({ children }) {
+  const pathname = usePathname();
   const { isLoggedIn, loading } = useAuth();
 
   const [wishlistIds, setWishlistIds] = useState(() => {
@@ -44,7 +47,7 @@ export function WishlistProvider({ children }) {
     }
 
     loadWishlist();
-  }, [isLoggedIn, loading]);
+  }, [isLoggedIn, loading,pathname]);
 
   const toggleWishlist = async (productId) => {
     if (!isLoggedIn) {

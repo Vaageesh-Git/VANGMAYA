@@ -1,9 +1,14 @@
-"use client";
-
+'use client'
 import Image from "next/image";
 import Link from "next/link";
+import { useWishlist } from '../../context/WishlistContext';
+import { useCart } from '../../context/CartContext';
 
-export default async function ProductClient({ product }) {
+export default function ProductClient({ product }) {
+  const { wishlistIds, toggleWishlist } = useWishlist();
+  const { cartList, setCartList, cartLoaded } = useCart();
+  const isWishlisted = wishlistIds.includes(product.id);
+  
   return (
     <main className="product-page container">
       {/* Breadcrumb */}
@@ -54,8 +59,13 @@ export default async function ProductClient({ product }) {
 
           <div className="product-actions">
             <button className="btn-primary">Buy Now</button>
-            <button className="btn-primary">Add to Cart</button>
-            <button className="btn-secondary">Add to Wishlist</button>
+            <button className="btn-primary" >Add to Cart</button>
+            <button
+              className={`btn-secondary wishlist-btn ${isWishlisted ? 'active' : ''}`}
+              onClick={() => toggleWishlist(product.id)}
+            >
+              {isWishlisted ? '❤️ Wishlisted' : '🤍 Add to Wishlist'}
+            </button>
           </div>
 
           <div className="product-description">

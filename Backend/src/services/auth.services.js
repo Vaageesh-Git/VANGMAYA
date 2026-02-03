@@ -12,7 +12,7 @@ async function signup({name,email,password}){
     });
 
     if (userData){
-        throw new Error("USER_ALREADY_EXISTs");
+        throw new Error("USER_ALREADY_EXISTS");
     };
 
     const hashedPassword = await bcrypt.hash(password,10)

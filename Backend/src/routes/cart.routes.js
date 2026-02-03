@@ -8,7 +8,7 @@ router.use(validateUser)
 
 router.get('/', cartController.getCart);
 router.post('/add', cartController.addToCart);
-router.post('/delete', cartController.removeFromCart);
+router.delete('/delete/:productId', cartController.removeFromCart);
 router.patch('/quantity', cartController.updateCartQuantity);
 
 module.exports = router

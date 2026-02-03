@@ -4356,3 +4356,11 @@ input, textarea {
   }
 }
 
+.product-card__wishlist svg {
+  color: #999;
+  transition: color 0.2s ease;
+}
+
+.product-card__wishlist svg.active {
+  color: #e63946;
+}
