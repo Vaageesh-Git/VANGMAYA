@@ -39,7 +39,7 @@ export default function CheckoutClient() {
 
       alert("Order Placed Successfully");
       setCartList([]);
-      setCartCount(0);
+      // setCartCount(0);
 
     } catch (err) {
       console.error(err);

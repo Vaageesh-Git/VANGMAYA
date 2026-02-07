@@ -160,6 +160,7 @@ async function decrement(productId) {
         cartList,
         cartLoaded,
         cartCount,
+        setCartList,
         addToCart,
         removeFromCart,
         isInCart,

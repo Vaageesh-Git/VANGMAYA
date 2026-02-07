@@ -6,8 +6,10 @@ import { useCart } from '../../context/CartContext';
 
 export default function ProductClient({ product }) {
   const { wishlistIds, toggleWishlist } = useWishlist();
-  const { cartList, setCartList, cartLoaded } = useCart();
+  const {addToCart,increment,decrement,getQuantity,cartLoaded} = useCart();
   const isWishlisted = wishlistIds.includes(product.id);
+  const quantity = getQuantity(product.id);
+
   
   return (
     <main className="product-page container">
@@ -59,7 +61,23 @@ export default function ProductClient({ product }) {
 
           <div className="product-actions">
             <button className="btn-primary">Buy Now</button>
-            <button className="btn-primary" >Add to Cart</button>
+            {quantity === 0 ? (
+              <button
+                className="btn-primary"
+                onClick={() => addToCart(product.id, 1)}
+                disabled={!cartLoaded}
+              >
+                Add to Cart
+              </button>
+            ) : (
+              <div className="quantity-bar">
+                <button onClick={() => decrement(product.id)}>−</button>
+                <span>{quantity}</span>
+                <button onClick={() => increment(product.id)}>+</button>
+              </div>
+            )}
+
+
             <button
               className={`btn-secondary wishlist-btn ${isWishlisted ? 'active' : ''}`}
               onClick={() => toggleWishlist(product.id)}
