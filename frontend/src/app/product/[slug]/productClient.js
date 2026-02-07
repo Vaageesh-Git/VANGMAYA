@@ -3,14 +3,28 @@ import Image from "next/image";
 import Link from "next/link";
 import { useWishlist } from '../../context/WishlistContext';
 import { useCart } from '../../context/CartContext';
+import { useRouter } from "next/navigation";
+
 
 export default function ProductClient({ product }) {
+  const router = useRouter();
   const { wishlistIds, toggleWishlist } = useWishlist();
   const {addToCart,increment,decrement,getQuantity,cartLoaded} = useCart();
   const isWishlisted = wishlistIds.includes(product.id);
   const quantity = getQuantity(product.id);
 
-  
+  const handleBuyNow = async () => {
+    if (!cartLoaded) return;
+
+    if (quantity > 0) {
+      router.push("/checkout");
+      return;
+    }
+
+    await addToCart(product.id, 1);
+    router.push("/checkout");
+  };
+
   return (
     <main className="product-page container">
       {/* Breadcrumb */}
@@ -60,7 +74,14 @@ export default function ProductClient({ product }) {
           </p>
 
           <div className="product-actions">
-            <button className="btn-primary">Buy Now</button>
+            <button
+              className="btn-primary"
+              onClick={handleBuyNow}
+              disabled={!cartLoaded}
+            >
+              Buy Now
+            </button>
+
             {quantity === 0 ? (
               <button
                 className="btn-primary"

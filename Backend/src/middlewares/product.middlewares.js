@@ -12,10 +12,16 @@ function validateSlug(req,res,next) {
 
 function validateCategorySlug(req,res,next){
     try{
-
         const { category } = req.query;
         if (!category) {
-            return res.status(400).json({message: "Category query param is required"});
+            // return res.status(400).json({message: "Category query param is required"});
+            return next()
+        }
+
+        if (typeof category !== 'string' || category.trim() === '') {
+            return res
+                .status(400)
+                .json({ message: "Invalid category query param" });
         }
 
         next()

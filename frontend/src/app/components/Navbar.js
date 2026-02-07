@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { useAuth } from "../context/AuthContext";
 import { useCart } from '../context/CartContext';
 import { useRouter } from "next/navigation";
+import axios from 'axios';
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -78,6 +79,7 @@ export default function Navbar() {
         setSearchResults(response.data);
         setShowResults(true);  
       } catch (err) {
+        console.log(err.message)
         alert('Can Not Fetch Products');
       } finally {
         setSearchLoading(false);

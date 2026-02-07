@@ -36,8 +36,13 @@ async function getProductsByIds(ids) {
   });
 }
 
+async function getAllProducts() {
+  return await prisma.product.findMany()
+}
+
 module.exports = {
     getProductBySlug,
     getProductsByCategory,
-    getProductsByIds
+    getProductsByIds,
+    getAllProducts
 };

@@ -19,7 +19,9 @@ const getProductBySlug = async (req,res) => {
 const getProductsByCategory = async (req,res) => {
     try {
         const { category } = req.query;
-        const products = await productServices.getProductsByCategory(category);
+        const products = category
+            ? await productServices.getProductsByCategory(category)
+            : await productServices.getAllProducts();
         return res.status(200).json(products);
     } catch(err){
         return res.status(500).json({message : "Internal Server Error"})

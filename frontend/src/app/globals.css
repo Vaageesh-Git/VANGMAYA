@@ -4388,3 +4388,9 @@ input, textarea {
   text-align: center;
   font-weight: 600;
 }
+
+.allproducts-page{
+  display: grid;
+  grid-template-columns: repeat(5,1fr);
+  padding: 2rem;
+}
