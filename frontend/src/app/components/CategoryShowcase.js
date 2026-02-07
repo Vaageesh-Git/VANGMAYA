@@ -63,7 +63,7 @@ const categories = [
 
 export default function CategoryShowcase() {
   return (
-    <section className="categories section" aria-labelledby="categories-title">
+    <section className="categories section" aria-labelledby="categories-title" id='shop-by-category'>
       <div className="container">
         <h2 id="categories-title" className="section-title">
           Shop by Category

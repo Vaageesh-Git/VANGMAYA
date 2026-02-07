@@ -19,7 +19,7 @@ const slides = [
       },
       secondary: {
         label: 'Explore Categories',
-        href: '/categories',
+        href: '#shop-by-category',
       },
     },
   },
@@ -131,12 +131,13 @@ export default function Hero() {
                     </svg>
                   </Link>
 
-                  <Link
+                  <a
                     href={slide.cta.secondary.href}
                     className="hero__btn hero__btn--secondary"
                   >
                     {slide.cta.secondary.label}
-                  </Link>
+                  </a>
+
                 </div>
 
               </div>
