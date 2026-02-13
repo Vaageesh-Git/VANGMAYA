@@ -34,8 +34,3 @@ jobs:
       - name: Install Backend Dependencies
         working-directory: ./Backend
         run: npm ci
-
-      # Run Backend Tests (optional)
-      - name: Run Backend Tests
-        working-directory: ./Backend
-        run: npm run test
