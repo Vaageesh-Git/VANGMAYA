@@ -1,0 +1,42 @@
+name: Fullstack CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout repo
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # Setup Node
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+
+      # Install & Build Frontend
+      - name: Install Frontend Dependencies
+        working-directory: ./frontend
+        run: npm ci
+
+      - name: Build Frontend
+        working-directory: ./frontend
+        run: npm run build
+
+      # Install Backend Dependencies
+      - name: Install Backend Dependencies
+        working-directory: ./Backend
+        run: npm ci
+
+      # Run Backend Tests (optional)
+      - name: Run Backend Tests
+        working-directory: ./Backend
+        run: npm run test
