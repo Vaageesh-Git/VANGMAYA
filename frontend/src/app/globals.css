@@ -4465,3 +4465,7 @@ input, textarea {
   grid-template-columns: repeat(5,1fr);
   padding: 2rem;
 }
+
+#featured {
+  scroll-margin-top: 90px; /* adjust to your navbar height */
+}

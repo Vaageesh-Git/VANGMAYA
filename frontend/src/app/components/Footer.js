@@ -7,9 +7,7 @@ const footerLinks = {
     title: 'Shop',
     links: [
       { name: 'All Products', href: '/products' },
-      { name: 'New Arrivals', href: '/new-arrivals' },
-      { name: 'Best Sellers', href: '/best-sellers' },
-      { name: 'Deals & Offers', href: '/deals' },
+      { name: 'Best Sellers', href: '#featured' },
       { name: 'Gift Cards', href: '/gift-cards' },
     ]
   },
@@ -18,7 +16,7 @@ const footerLinks = {
     links: [
       { name: 'Electronics', href: '/category/electronics' },
       { name: 'Fashion', href: '/category/fashion' },
-      { name: 'Home & Living', href: '/category/home-living' },
+      { name: 'Home & Living', href: '/category/home-kitchen' },
       { name: 'Beauty', href: '/category/beauty' },
       { name: 'Sports & Fitness', href: '/category/sports' },
       { name: 'Books', href: '/category/books' },

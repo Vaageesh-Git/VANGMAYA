@@ -15,7 +15,7 @@ export default async function FeaturedProducts() {
   const products = await getFeaturedProducts()
 
   return (
-    <section className="featured section">
+    <section id="featured" className="featured section">
       <div className="container">
         <h2 className="section-title">Featured Products</h2>
 
