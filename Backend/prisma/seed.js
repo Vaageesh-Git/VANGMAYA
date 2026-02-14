@@ -195,27 +195,75 @@
 
 
 // prisma/makeFeatured.js
-const prisma = require("../src/db/prisma");
+// const prisma = require("../src/db/prisma");
 
-async function makeFeatured() {
-  await prisma.product.updateMany({
-    where: {
-      slug: {
-        in: [
-          "iphone-15-pro-max",
-          "vitamin-c-face-serum",
-          "adjustable-dumbbell-set"
-        ]
+// async function makeFeatured() {
+//   await prisma.product.updateMany({
+//     where: {
+//       slug: {
+//         in: [
+//           "iphone-15-pro-max",
+//           "vitamin-c-face-serum",
+//           "adjustable-dumbbell-set"
+//         ]
+//       }
+//     },
+//     data: {
+//       isFeatured: true
+//     }
+//   });
+
+//   console.log("Featured products updated ✅");
+// }
+
+// makeFeatured()
+//   .catch(console.error)
+//   .finally(() => prisma.$disconnect());
+
+  const prisma = require("../src/db/prisma");
+
+async function addFeaturedProducts() {
+  try {
+    // Get products that are NOT featured
+    const products = await prisma.product.findMany({
+      where: {
+        isFeatured: false,
+        isActive: true
+      },
+      select: {
+        id: true
       }
-    },
-    data: {
-      isFeatured: true
-    }
-  });
+    });
 
-  console.log("Featured products updated ✅");
+    if (products.length === 0) {
+      console.log("No products available to feature.");
+      return;
+    }
+
+    // Shuffle products randomly
+    const shuffled = products.sort(() => 0.5 - Math.random());
+
+    // Pick at least 10 (or all if less than 10 available)
+    const selected = shuffled.slice(0, 10);
+
+    // Update them
+    await prisma.product.updateMany({
+      where: {
+        id: {
+          in: selected.map(p => p.id)
+        }
+      },
+      data: {
+        isFeatured: true
+      }
+    });
+
+    console.log(`✅ ${selected.length} products marked as featured`);
+  } catch (error) {
+    console.error("Error adding featured products:", error);
+  } finally {
+    await prisma.$disconnect();
+  }
 }
 
-makeFeatured()
-  .catch(console.error)
-  .finally(() => prisma.$disconnect());
+addFeaturedProducts();

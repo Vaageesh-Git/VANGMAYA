@@ -40,7 +40,6 @@ const getProductsByIds = async (req, res) => {
 };
 
 const getFeaturedProducts = async(req,res) => {
-    console.log('hit')
     try{
         const products = await productServices.getFeaturedProducts();
         return res.json(products)
