@@ -39,9 +39,20 @@ const getProductsByIds = async (req, res) => {
   }
 };
 
+const getFeaturedProducts = async(req,res) => {
+    console.log('hit')
+    try{
+        const products = await productServices.getFeaturedProducts();
+        return res.json(products)
+    } catch(err){
+        return res.status(500).json({message : "Internal Server Error"})
+    }
+}
+
 
 module.exports = {
     getProductBySlug,
     getProductsByCategory,
-    getProductsByIds
+    getProductsByIds,
+    getFeaturedProducts
 }

@@ -40,9 +40,18 @@ async function getAllProducts() {
   return await prisma.product.findMany()
 }
 
+async function getFeaturedProducts() {
+  return await prisma.product.findMany({
+    where : {
+      isFeatured : true
+    }
+  })
+}
+
 module.exports = {
     getProductBySlug,
     getProductsByCategory,
     getProductsByIds,
-    getAllProducts
+    getAllProducts,
+    getFeaturedProducts
 };

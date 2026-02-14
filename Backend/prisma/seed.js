@@ -170,25 +170,52 @@
 //     await prisma.$disconnect();
 //   });
 
+// const prisma = require("../src/db/prisma");
+
+// function normalize(text) {
+//   return text.toLowerCase().replace(/[^a-z0-9]/g, "");
+// }
+
+// async function backfillSearchKeys() {
+//   const products = await prisma.product.findMany();
+
+//   for (const p of products) {
+//     const searchKey = normalize(p.name + " " + p.brand);
+
+//     await prisma.product.update({
+//       where: { id: p.id },
+//       data: { searchKey },
+//     });
+//   }
+
+//   console.log("searchKey populated");
+// }
+
+// backfillSearchKeys();
+
+
+// prisma/makeFeatured.js
 const prisma = require("../src/db/prisma");
 
-function normalize(text) {
-  return text.toLowerCase().replace(/[^a-z0-9]/g, "");
+async function makeFeatured() {
+  await prisma.product.updateMany({
+    where: {
+      slug: {
+        in: [
+          "iphone-15-pro-max",
+          "vitamin-c-face-serum",
+          "adjustable-dumbbell-set"
+        ]
+      }
+    },
+    data: {
+      isFeatured: true
+    }
+  });
+
+  console.log("Featured products updated ✅");
 }
 
-async function backfillSearchKeys() {
-  const products = await prisma.product.findMany();
-
-  for (const p of products) {
-    const searchKey = normalize(p.name + " " + p.brand);
-
-    await prisma.product.update({
-      where: { id: p.id },
-      data: { searchKey },
-    });
-  }
-
-  console.log("searchKey populated");
-}
-
-backfillSearchKeys();
+makeFeatured()
+  .catch(console.error)
+  .finally(() => prisma.$disconnect());
