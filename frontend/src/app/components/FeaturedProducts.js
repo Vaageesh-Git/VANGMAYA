@@ -8,6 +8,7 @@ async function getFeaturedProducts() {
       return res.data;
   } catch(err){
     console.log(err.message)
+    return [];
   }
 }
 
