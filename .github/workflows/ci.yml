@@ -1,30 +1,36 @@
-name: Fullstack CI
+name: Fullstack CI/CD
 
 on:
   push:
     branches:
-      - main
+      - "CI-/-CD"
   pull_request:
+    branches:
+      - "CI-/-CD"
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout repo
+      # =========================
+      # Checkout Repository
+      # =========================
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      # =========================
       # Setup Node
+      # =========================
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: 'npm'
 
       # =========================
       # FRONTEND
       # =========================
-
       - name: Install Frontend Dependencies
         working-directory: ./frontend
         run: npm ci
@@ -40,7 +46,36 @@ jobs:
       # =========================
       # BACKEND
       # =========================
-
       - name: Install Backend Dependencies
         working-directory: ./Backend
         run: npm ci
+
+      - name: Build Backend
+        working-directory: ./Backend
+        run: npm run build
+
+      # =========================
+      # Setup SSH for EC2
+      # =========================
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+
+      # =========================
+      # Deploy to EC2
+      # =========================
+      - name: Deploy to EC2
+        run: |
+          ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
+            cd /home/${{ secrets.EC2_USER }}/your-project-folder
+            git pull origin CI-/-CD
+            cd frontend
+            npm install
+            npm run build
+            cd ../Backend
+            npm install
+            pm2 restart all || pm2 start index.js --name backend
+          EOF
