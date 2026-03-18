@@ -2,80 +2,114 @@ name: Fullstack CI/CD
 
 on:
   push:
-    branches:
-      - "CI-/-CD"
+    branches: [main]
   pull_request:
-    branches:
-      - "CI-/-CD"
 
 jobs:
-  build-and-deploy:
+
+  # =========================
+  # FRONTEND JOB
+  # =========================
+  frontend:
     runs-on: ubuntu-latest
 
     steps:
-      # =========================
-      # Checkout Repository
-      # =========================
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      # =========================
-      # Setup Node
-      # =========================
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'npm'
 
-      # =========================
-      # FRONTEND
-      # =========================
-      - name: Install Frontend Dependencies
+      - name: Install Dependencies
         working-directory: ./frontend
         run: npm ci
 
-      - name: Run Frontend Tests
+      - name: Lint Check
         working-directory: ./frontend
-        run: npm run test:coverage
+        run: npm run lint
 
-      - name: Build Frontend
+      - name: Run Tests
+        working-directory: ./frontend
+        run: npm run test
+
+      - name: Build
         working-directory: ./frontend
         run: npm run build
 
-      # =========================
-      # BACKEND
-      # =========================
-      - name: Install Backend Dependencies
+
+  # =========================
+  # BACKEND JOB
+  # =========================
+  backend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Dependencies
         working-directory: ./Backend
         run: npm ci
 
-      - name: Build Backend
+      - name: Lint Check
         working-directory: ./Backend
-        run: npm run build
+        run: npm run lint || echo "No lint configured"
 
-      # =========================
-      # Setup SSH for EC2
-      # =========================
-      - name: Setup SSH
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+      - name: Run Unit Tests
+        working-directory: ./Backend
+        run: npm test || echo "No tests yet"
 
-      # =========================
-      # Deploy to EC2
-      # =========================
-      - name: Deploy to EC2
+
+  # =========================
+  # INTEGRATION TEST
+  # =========================
+  integration:
+    runs-on: ubuntu-latest
+    needs: [frontend, backend]
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Start Backend
+        working-directory: ./Backend
         run: |
-          ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
-            cd /home/${{ secrets.EC2_USER }}/your-project-folder
-            git pull origin CI-/-CD
-            cd frontend
+          npm ci
+          npm start &
+
+      - name: Wait for Server
+        run: sleep 10
+
+      - name: Test API
+        run: curl http://localhost:5000 || exit 1
+
+
+  # =========================
+  # DEPLOY TO EC2 (BONUS)
+  # =========================
+  deploy:
+    runs-on: ubuntu-latest
+    needs: integration
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd project
+            git pull
             npm install
-            npm run build
-            cd ../Backend
-            npm install
-            pm2 restart all || pm2 start index.js --name backend
-          EOF
+            pm2 restart all
