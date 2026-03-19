@@ -2,7 +2,7 @@ name: Fullstack CI/CD
 
 on:
   push:
-    branches: [CI-/-CD]
+    branches: ["**"]   # runs on all branches (safe)
   pull_request:
 
 jobs:
@@ -89,15 +89,15 @@ jobs:
         working-directory: ./Backend
         run: npm ci
 
-      # Optional: set env (prevents crash if your app expects PORT)
       - name: Set Environment Variables
-        run: echo "PORT=5000" >> $GITHUB_ENV
+        run: echo "PORT=3001" >> $GITHUB_ENV
 
       - name: Start Backend
         working-directory: ./Backend
         run: |
           nohup npm start > server.log 2>&1 &
 
+      - name: Wait for Backend
         run: |
           for i in {1..10}; do
             curl -s http://localhost:3001 && exit 0
@@ -115,7 +115,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: integration
-    if: false   # 🔥 disabled to avoid failure without secrets
+    if: false   # disabled to avoid failure without secrets
 
     steps:
       - name: Deploy via SSH
