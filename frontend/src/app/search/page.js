@@ -18,9 +18,9 @@ export default async function SearchPage({ searchParams }) {
 
   return (
     <div className="search-page container">
-      <h2>
-        Search results for "<strong>{query}</strong>"
-      </h2>
+    <h2>
+      Search results for &quot;<strong>{query}</strong>&quot;
+    </h2>
 
       {products.length === 0 && <p>No products found</p>}
 

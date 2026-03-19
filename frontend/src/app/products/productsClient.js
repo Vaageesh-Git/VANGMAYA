@@ -18,7 +18,7 @@ export default function FetchProducts(){
     return (
         <div className="allproducts-page">
             {
-                products.map((product) => <ProductCard product={product}/>)
+                products.map((product) => <ProductCard key={product.id} product={product}/>)
             }
         </div>
     )
