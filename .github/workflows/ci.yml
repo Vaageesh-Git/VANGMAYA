@@ -98,10 +98,9 @@ jobs:
         run: |
           nohup npm start > server.log 2>&1 &
 
-      - name: Wait for Backend
         run: |
           for i in {1..10}; do
-            curl -s http://localhost:5000 && exit 0
+            curl -s http://localhost:3001 && exit 0
             echo "Waiting for server..."
             sleep 3
           done
