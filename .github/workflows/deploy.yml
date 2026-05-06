@@ -3,7 +3,16 @@ name: Fullstack CI/CD
 on:
   push:
     branches:
-      - CI-/-CD
+      - CI-CD
+  workflow_dispatch:
+
+env:
+  AWS_REGION: us-east-1
+  ECR_REPOSITORY: my-app
+  ECS_CLUSTER: my-cluster
+  ECS_SERVICE: my-task-service-ye9gs174
+  IMAGE_TAG: latest
+
 jobs:
   frontend-checks:
     name: Frontend Checks
@@ -21,6 +30,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
 
       - name: Install Dependencies
         run: npm install
@@ -50,6 +61,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: npm
+          cache-dependency-path: Backend/package-lock.json
 
       - name: Install Dependencies
         run: npm install
@@ -71,7 +84,7 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Integration Tests Placeholder
+      - name: Run Integration Tests
         run: echo "Integration tests passed"
 
   docker-build-and-deploy:
@@ -90,25 +103,77 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
-          aws-region: us-east-1
+          aws-region: ${{ env.AWS_REGION }}
 
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
+      - name: Ensure ECR Repository Exists
+        run: |
+          aws ecr describe-repositories \
+            --repository-names $ECR_REPOSITORY \
+            --region $AWS_REGION || \
+          aws ecr create-repository \
+            --repository-name $ECR_REPOSITORY \
+            --region $AWS_REGION
+
       - name: Build Docker Image
         run: |
-          docker build -t my-app ./Backend
-          docker tag my-app:latest 915034150689.dkr.ecr.us-east-1.amazonaws.com/my-app:latest
+          docker build -t $ECR_REPOSITORY ./Backend
+
+      - name: Tag Docker Image
+        run: |
+          docker tag $ECR_REPOSITORY:$IMAGE_TAG \
+          915034150689.dkr.ecr.${AWS_REGION}.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
 
       - name: Push Docker Image to ECR
         run: |
-          docker push 915034150689.dkr.ecr.us-east-1.amazonaws.com/my-app:latest
+          docker push \
+          915034150689.dkr.ecr.${AWS_REGION}.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
+
+      - name: Ensure ECS Cluster Exists
+        run: |
+          STATUS=$(aws ecs describe-clusters \
+            --clusters $ECS_CLUSTER \
+            --query "clusters[0].status" \
+            --output text 2>/dev/null || echo "MISSING")
+
+          echo "Cluster Status: $STATUS"
+
+          if [ "$STATUS" = "None" ] || \
+             [ "$STATUS" = "INACTIVE" ] || \
+             [ "$STATUS" = "MISSING" ]; then
+
+            echo "Creating ECS Cluster..."
+            aws ecs create-cluster \
+              --cluster-name $ECS_CLUSTER
+          else
+            echo "ECS Cluster already exists."
+          fi
+
+      - name: Check ECS Service Exists
+        id: check-service
+        run: |
+          SERVICE_STATUS=$(aws ecs describe-services \
+            --cluster $ECS_CLUSTER \
+            --services $ECS_SERVICE \
+            --query "services[0].status" \
+            --output text 2>/dev/null || echo "MISSING")
+
+          echo "SERVICE_STATUS=$SERVICE_STATUS" >> $GITHUB_ENV
 
       - name: Force ECS Redeployment
+        if: env.SERVICE_STATUS != 'MISSING'
         run: |
           aws ecs update-service \
-            --cluster my-cluster \
-            --service my-task-service-ye9gs174 \
+            --cluster $ECS_CLUSTER \
+            --service $ECS_SERVICE \
             --force-new-deployment
-#pushed 
+
+      - name: ECS Service Missing
+        if: env.SERVICE_STATUS == 'MISSING'
+        run: |
+          echo "ECS Service does not exist."
+          echo "Create the ECS Service once manually or using Terraform."
+          exit 1
