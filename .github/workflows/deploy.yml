@@ -10,7 +10,7 @@ env:
   AWS_REGION: us-east-1
   ECR_REPOSITORY: my-app
   ECS_CLUSTER: my-cluster
-  ECS_SERVICE: my-task-service-ye9gs174
+  ECS_SERVICE: my-task-service-zk57872j
   IMAGE_TAG: latest
 
 jobs:
