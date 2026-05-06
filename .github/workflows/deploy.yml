@@ -98,7 +98,7 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          docker build -t my-app .
+          docker build -t my-app ./Backend
           docker tag my-app:latest 915034150689.dkr.ecr.us-east-1.amazonaws.com/my-app:latest
 
       - name: Push Docker Image to ECR
