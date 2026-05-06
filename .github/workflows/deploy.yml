@@ -3,8 +3,7 @@ name: Fullstack CI/CD
 on:
   push:
     branches:
-      - CI-CD
-
+      - CI-/-CD
 jobs:
   frontend-checks:
     name: Frontend Checks
